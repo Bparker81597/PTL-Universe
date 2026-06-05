@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://ptl_prototype_ui"]
+
+[node name="PrototypeUI" type="CanvasLayer"]
+
+[node name="TitleLabel" type="Label" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 20.0
+offset_right = -24.0
+offset_bottom = 54.0
+text = "PTL Universe Prototype"
+horizontal_alignment = 1
