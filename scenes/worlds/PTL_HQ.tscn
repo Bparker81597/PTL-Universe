@@ -1,89 +1,345 @@
-[gd_scene load_steps=11 format=3 uid="uid://ptl_hq_scene"]
+[gd_scene load_steps=15 format=3 uid="uid://ptl_hq_scene"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(16, 0.2, 16)
+[sub_resource type="Environment" id="Environment_hq"]
+background_mode = 1
+background_color = Color(0.025, 0.034, 0.047, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.28, 0.34, 0.42, 1)
+ambient_light_energy = 0.55
+glow_enabled = true
+glow_intensity = 0.45
+glow_bloom = 0.25
 
-[sub_resource type="BoxMesh" id="BoxMesh_floor"]
-size = Vector3(16, 0.2, 16)
+[sub_resource type="BoxShape3D" id="BoxShape3D_unit"]
+size = Vector3(1, 1, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
-albedo_color = Color(0.18, 0.2, 0.22, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_unit"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_wall_long"]
-size = Vector3(16, 3, 0.3)
-
-[sub_resource type="BoxMesh" id="BoxMesh_wall_long"]
-size = Vector3(16, 3, 0.3)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wall_short"]
-size = Vector3(0.3, 3, 16)
-
-[sub_resource type="BoxMesh" id="BoxMesh_wall_short"]
-size = Vector3(0.3, 3, 16)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
-albedo_color = Color(0.34, 0.36, 0.38, 1)
+[sub_resource type="CylinderMesh" id="CylinderMesh_column"]
+top_radius = 0.35
+bottom_radius = 0.35
+height = 1.0
+sides = 24
 
 [sub_resource type="TorusMesh" id="TorusMesh_nexus"]
-inner_radius = 0.65
-outer_radius = 1.35
+inner_radius = 1.45
+outer_radius = 2.55
+
+[sub_resource type="SphereMesh" id="SphereMesh_portal_core"]
+radius = 1.55
+height = 3.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.12, 0.14, 0.16, 1)
+roughness = 0.42
+metallic = 0.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor_panel"]
+albedo_color = Color(0.19, 0.22, 0.25, 1)
+roughness = 0.35
+metallic = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.24, 0.26, 0.29, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_trim"]
+albedo_color = Color(0.055, 0.065, 0.08, 1)
+roughness = 0.5
+metallic = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_light_strip"]
+albedo_color = Color(0.18, 0.7, 1, 1)
+emission_enabled = true
+emission = Color(0.08, 0.5, 1, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_desk"]
+albedo_color = Color(0.09, 0.11, 0.13, 1)
+roughness = 0.32
+metallic = 0.45
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nexus"]
 albedo_color = Color(0.2, 0.85, 1, 1)
 emission_enabled = true
-emission = Color(0.1, 0.6, 1, 1)
-emission_energy_multiplier = 1.5
+emission = Color(0.08, 0.55, 1, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_portal_core"]
+transparency = 1
+albedo_color = Color(0.12, 0.7, 1, 0.35)
+emission_enabled = true
+emission = Color(0.1, 0.45, 1, 1)
+emission_energy_multiplier = 1.7
 
 [node name="PTL_HQ" type="Node3D"]
 
-[node name="Floor" type="StaticBody3D" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_hq")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
-shape = SubResource("BoxShape3D_floor")
+[node name="Architecture" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
-mesh = SubResource("BoxMesh_floor")
+[node name="Floor" type="StaticBody3D" parent="Architecture"]
+position = Vector3(0, -0.1, -4)
+scale = Vector3(20, 0.2, 28)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Architecture/Floor"]
+shape = SubResource("BoxShape3D_unit")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Architecture/Floor"]
+mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_floor")
 
-[node name="BackWall" type="StaticBody3D" parent="."]
-position = Vector3(0, 1.5, -8)
+[node name="LobbyFloorInset" type="MeshInstance3D" parent="Architecture"]
+position = Vector3(0, 0.02, 3)
+scale = Vector3(12, 0.04, 7)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_floor_panel")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BackWall"]
-shape = SubResource("BoxShape3D_wall_long")
+[node name="NexusFloorInset" type="MeshInstance3D" parent="Architecture"]
+position = Vector3(0, 0.03, -13)
+scale = Vector3(15, 0.05, 8)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_floor_panel")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BackWall"]
-mesh = SubResource("BoxMesh_wall_long")
+[node name="BackWall" type="StaticBody3D" parent="Architecture"]
+position = Vector3(0, 2, -18)
+scale = Vector3(20, 4, 0.35)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Architecture/BackWall"]
+shape = SubResource("BoxShape3D_unit")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Architecture/BackWall"]
+mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_wall")
 
-[node name="LeftWall" type="StaticBody3D" parent="."]
-position = Vector3(-8, 1.5, 0)
+[node name="LeftWall" type="StaticBody3D" parent="Architecture"]
+position = Vector3(-10, 2, -4)
+scale = Vector3(0.35, 4, 28)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftWall"]
-shape = SubResource("BoxShape3D_wall_short")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Architecture/LeftWall"]
+shape = SubResource("BoxShape3D_unit")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="LeftWall"]
-mesh = SubResource("BoxMesh_wall_short")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Architecture/LeftWall"]
+mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_wall")
 
-[node name="RightWall" type="StaticBody3D" parent="."]
-position = Vector3(8, 1.5, 0)
+[node name="RightWall" type="StaticBody3D" parent="Architecture"]
+position = Vector3(10, 2, -4)
+scale = Vector3(0.35, 4, 28)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RightWall"]
-shape = SubResource("BoxShape3D_wall_short")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Architecture/RightWall"]
+shape = SubResource("BoxShape3D_unit")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RightWall"]
-mesh = SubResource("BoxMesh_wall_short")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Architecture/RightWall"]
+mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_wall")
 
-[node name="TheNexus" type="Node3D" parent="."]
-position = Vector3(0, 1.6, -6.9)
+[node name="FrontEntryHeader" type="StaticBody3D" parent="Architecture"]
+position = Vector3(0, 3.15, 10)
+scale = Vector3(20, 1.7, 0.35)
 
-[node name="PortalRing" type="MeshInstance3D" parent="TheNexus"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Architecture/FrontEntryHeader"]
+shape = SubResource("BoxShape3D_unit")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Architecture/FrontEntryHeader"]
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+
+[node name="NexusRoomDividerLeft" type="StaticBody3D" parent="Architecture"]
+position = Vector3(-6.5, 1.75, -8)
+scale = Vector3(7, 3.5, 0.28)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Architecture/NexusRoomDividerLeft"]
+shape = SubResource("BoxShape3D_unit")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Architecture/NexusRoomDividerLeft"]
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_trim")
+
+[node name="NexusRoomDividerRight" type="StaticBody3D" parent="Architecture"]
+position = Vector3(6.5, 1.75, -8)
+scale = Vector3(7, 3.5, 0.28)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Architecture/NexusRoomDividerRight"]
+shape = SubResource("BoxShape3D_unit")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Architecture/NexusRoomDividerRight"]
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_trim")
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="LobbyKeyLight" type="OmniLight3D" parent="Lighting"]
+position = Vector3(0, 4.2, 2.5)
+light_color = Color(0.82, 0.9, 1, 1)
+light_energy = 2.1
+omni_range = 14.0
+
+[node name="NexusRoomLight" type="OmniLight3D" parent="Lighting"]
+position = Vector3(0, 4.6, -13)
+light_color = Color(0.26, 0.78, 1, 1)
+light_energy = 2.8
+omni_range = 16.0
+
+[node name="ReceptionWarmFill" type="OmniLight3D" parent="Lighting"]
+position = Vector3(0, 2.4, 5.2)
+light_color = Color(1, 0.84, 0.62, 1)
+light_energy = 0.7
+omni_range = 8.0
+
+[node name="CeilingLightPanels" type="Node3D" parent="Lighting"]
+
+[node name="LobbyPanel" type="MeshInstance3D" parent="Lighting/CeilingLightPanels"]
+position = Vector3(0, 3.95, 2.6)
+scale = Vector3(8, 0.08, 0.45)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_light_strip")
+
+[node name="NexusPanelLeft" type="MeshInstance3D" parent="Lighting/CeilingLightPanels"]
+position = Vector3(-3.8, 3.95, -13)
+scale = Vector3(0.45, 0.08, 7)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_light_strip")
+
+[node name="NexusPanelRight" type="MeshInstance3D" parent="Lighting/CeilingLightPanels"]
+position = Vector3(3.8, 3.95, -13)
+scale = Vector3(0.45, 0.08, 7)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_light_strip")
+
+[node name="PTLLogoWall" type="Node3D" parent="."]
+position = Vector3(0, 0, -17.78)
+
+[node name="LogoBackingPanel" type="MeshInstance3D" parent="PTLLogoWall"]
+position = Vector3(0, 2.35, 0)
+scale = Vector3(7.2, 1.8, 0.08)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_trim")
+
+[node name="PTLText" type="Label3D" parent="PTLLogoWall"]
+position = Vector3(0, 2.55, 0.08)
+pixel_size = 0.012
+modulate = Color(0.65, 0.9, 1, 1)
+text = "PTL"
+font_size = 128
+outline_size = 8
+outline_modulate = Color(0.02, 0.08, 0.12, 1)
+horizontal_alignment = 1
+
+[node name="LogoSubtitle" type="Label3D" parent="PTLLogoWall"]
+position = Vector3(0, 1.55, 0.08)
+pixel_size = 0.012
+modulate = Color(0.88, 0.95, 1, 1)
+text = "PARKER TECH LABS"
+font_size = 38
+outline_size = 4
+outline_modulate = Color(0.02, 0.08, 0.12, 1)
+horizontal_alignment = 1
+
+[node name="ReceptionDesk" type="Node3D" parent="."]
+position = Vector3(0, 0, 4.4)
+
+[node name="DeskBase" type="StaticBody3D" parent="ReceptionDesk"]
+position = Vector3(0, 0.55, 0)
+scale = Vector3(5.2, 1.1, 1.2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ReceptionDesk/DeskBase"]
+shape = SubResource("BoxShape3D_unit")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ReceptionDesk/DeskBase"]
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_desk")
+
+[node name="DeskTop" type="MeshInstance3D" parent="ReceptionDesk"]
+position = Vector3(0, 1.18, 0)
+scale = Vector3(5.8, 0.18, 1.45)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_floor_panel")
+
+[node name="DeskGlowStrip" type="MeshInstance3D" parent="ReceptionDesk"]
+position = Vector3(0, 0.92, 0.62)
+scale = Vector3(4.8, 0.08, 0.08)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_light_strip")
+
+[node name="LobbyDetails" type="Node3D" parent="."]
+
+[node name="LeftColumn" type="MeshInstance3D" parent="LobbyDetails"]
+position = Vector3(-7.3, 1.6, 1.5)
+scale = Vector3(1, 3.2, 1)
+mesh = SubResource("CylinderMesh_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_trim")
+
+[node name="RightColumn" type="MeshInstance3D" parent="LobbyDetails"]
+position = Vector3(7.3, 1.6, 1.5)
+scale = Vector3(1, 3.2, 1)
+mesh = SubResource("CylinderMesh_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_trim")
+
+[node name="LeftWallAccent" type="MeshInstance3D" parent="LobbyDetails"]
+position = Vector3(-9.78, 2.2, -4)
+scale = Vector3(0.08, 0.16, 20)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_light_strip")
+
+[node name="RightWallAccent" type="MeshInstance3D" parent="LobbyDetails"]
+position = Vector3(9.78, 2.2, -4)
+scale = Vector3(0.08, 0.16, 20)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_light_strip")
+
+[node name="TheNexusRoom" type="Node3D" parent="."]
+position = Vector3(0, 0, -13)
+
+[node name="PortalPlatform" type="StaticBody3D" parent="TheNexusRoom"]
+position = Vector3(0, 0.12, 0)
+scale = Vector3(7.5, 0.24, 4.8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TheNexusRoom/PortalPlatform"]
+shape = SubResource("BoxShape3D_unit")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TheNexusRoom/PortalPlatform"]
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_trim")
+
+[node name="TheNexus" type="Node3D" parent="TheNexusRoom"]
+position = Vector3(0, 2.35, -1.2)
+
+[node name="PortalCore" type="MeshInstance3D" parent="TheNexusRoom/TheNexus"]
+mesh = SubResource("SphereMesh_portal_core")
+surface_material_override/0 = SubResource("StandardMaterial3D_portal_core")
+
+[node name="PortalRingOuter" type="MeshInstance3D" parent="TheNexusRoom/TheNexus"]
 rotation = Vector3(1.5708, 0, 0)
 mesh = SubResource("TorusMesh_nexus")
 surface_material_override/0 = SubResource("StandardMaterial3D_nexus")
 
-[node name="PortalLight" type="OmniLight3D" parent="TheNexus"]
+[node name="PortalRingInner" type="MeshInstance3D" parent="TheNexusRoom/TheNexus"]
+rotation = Vector3(1.5708, 0, 0.7854)
+scale = Vector3(0.78, 0.78, 0.78)
+mesh = SubResource("TorusMesh_nexus")
+surface_material_override/0 = SubResource("StandardMaterial3D_light_strip")
+
+[node name="PortalLight" type="OmniLight3D" parent="TheNexusRoom/TheNexus"]
 light_color = Color(0.2, 0.85, 1, 1)
-light_energy = 2.5
-omni_range = 5.0
+light_energy = 6.0
+omni_range = 9.0
+
+[node name="PortalBackGlow" type="MeshInstance3D" parent="TheNexusRoom"]
+position = Vector3(0, 2.35, -2.85)
+scale = Vector3(5.8, 3.8, 0.12)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_light_strip")
+
+[node name="LeftNexusColumn" type="MeshInstance3D" parent="TheNexusRoom"]
+position = Vector3(-4.6, 1.8, -1.1)
+scale = Vector3(1, 3.6, 1)
+mesh = SubResource("CylinderMesh_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_trim")
+
+[node name="RightNexusColumn" type="MeshInstance3D" parent="TheNexusRoom"]
+position = Vector3(4.6, 1.8, -1.1)
+scale = Vector3(1, 3.6, 1)
+mesh = SubResource("CylinderMesh_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_trim")

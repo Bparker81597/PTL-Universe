@@ -25,14 +25,19 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 
 ## PTL_HQ.tscn
 
-`PTL_HQ.tscn` is the first placeholder world scene.
+`PTL_HQ.tscn` is the first placeholder world scene. It is still made from simple Godot primitives, but it is arranged to feel more like a futuristic Parker Tech Labs HQ.
 
 - `PTL_HQ` is the root `Node3D` for the lobby.
-- `Floor` is a `StaticBody3D` with a box collision shape and a visible box mesh.
-- `BackWall`, `LeftWall`, and `RightWall` are `StaticBody3D` walls that block the player.
-- `TheNexus` is a placeholder portal area.
-- `PortalRing` is a glowing torus mesh that visually marks the portal.
-- `PortalLight` is an `OmniLight3D` that makes the portal area feel active.
+- `WorldEnvironment` sets the dark ambient background color and enables a small glow effect for emissive materials.
+- `Architecture` groups the physical floor, walls, entry header, and Nexus room dividers.
+- `Floor` is a large `StaticBody3D` with collision, while `LobbyFloorInset` and `NexusFloorInset` are visual floor panels with different material colors.
+- `BackWall`, `LeftWall`, `RightWall`, and `FrontEntryHeader` are large placeholder walls that define the HQ space.
+- `NexusRoomDividerLeft` and `NexusRoomDividerRight` frame the opening from the lobby into the portal room.
+- `Lighting` groups the lobby light, Nexus room light, reception fill light, and emissive ceiling light panels.
+- `PTLLogoWall` contains the wall backing panel plus `Label3D` text for `PTL` and `PARKER TECH LABS`.
+- `ReceptionDesk` is built from box meshes for the base, desktop, and glowing front strip.
+- `LobbyDetails` adds placeholder columns and wall accent strips to make the lobby feel more finished.
+- `TheNexusRoom` contains the larger portal platform, glowing portal core, portal rings, portal light, and support columns.
 
 ## Player.tscn
 
