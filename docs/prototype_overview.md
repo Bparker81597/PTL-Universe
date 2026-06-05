@@ -29,15 +29,15 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 
 - `PTL_HQ` is the root `Node3D` for the lobby.
 - `WorldEnvironment` sets the dark ambient background color and enables a small glow effect for emissive materials.
-- `Architecture` groups the physical floor, walls, entry header, and Nexus room dividers.
-- `Floor` is a large `StaticBody3D` with collision, while `LobbyFloorInset` and `NexusFloorInset` are visual floor panels with different material colors.
+- `Architecture` groups the physical floor, walls, entry header, center floor path, and Nexus room dividers.
+- `Floor` is a large `StaticBody3D` with collision, while `LobbyFloorInset`, `NexusFloorInset`, `CenterPathFloor`, `CenterPathTealLine`, and `CenterPathPurpleLine` create simple primitive floor materials and a guided path toward the portal.
 - `BackWall`, `LeftWall`, `RightWall`, and `FrontEntryHeader` are large placeholder walls that define the HQ space.
 - `NexusRoomDividerLeft` and `NexusRoomDividerRight` frame the opening from the lobby into the portal room.
-- `Lighting` groups the lobby light, Nexus room light, reception fill light, and emissive ceiling light panels.
+- `Lighting` groups teal and purple lobby lights, the Nexus room light, reception fill light, ceiling light panels, and ceiling ribs.
 - `PTLLogoWall` contains the wall backing panel plus `Label3D` text for `PTL` and `PARKER TECH LABS`.
-- `ReceptionDesk` is built from box meshes for the base, desktop, and glowing front strip.
-- `LobbyDetails` adds placeholder columns and wall accent strips to make the lobby feel more finished.
-- `TheNexusRoom` contains the larger portal platform, glowing portal core, portal rings, portal light, and support columns.
+- `ReceptionDesk` is built from box meshes for the base, desktop, glowing front strip, and transparent placeholder display screen.
+- `LobbyDetails` adds placeholder columns, wall accent strips, and angled architectural fins to make the lobby feel more futuristic while keeping it open.
+- `TheNexusRoom` sits at the far end and contains the larger portal platform, glowing portal core, portal rings, purple back glow, portal light, support columns, and side accent strips.
 
 ## Player.tscn
 
