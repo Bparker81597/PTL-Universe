@@ -25,6 +25,8 @@ res://scenes/main/Main.tscn
 - `S` moves backward.
 - `D` moves right.
 - `Space` jumps.
+- `E` interacts with The Nexus when nearby.
+- `Escape` closes the Nexus travel menu.
 
 ## Learning Notes
 
