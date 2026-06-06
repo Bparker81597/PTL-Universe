@@ -1,7 +1,10 @@
 extends CanvasLayer
 
-## Controls the Nexus interaction prompt and the first placeholder travel menu.
-## Destination buttons only print debug messages until real worlds are added.
+## Controls the Nexus interaction prompt and travel menu.
+
+const CODEVERSE_CITY_PATH := "res://scenes/worlds/codeverse_city/CodeverseCity.tscn"
+const NOVATONE_STUDIO_PATH := "res://scenes/worlds/novatone_studio/NovaToneStudio.tscn"
+const NOVACANVAS_LOFT_PATH := "res://scenes/worlds/novacanvas_loft/NovaCanvasLoft.tscn"
 
 @onready var prompt_panel: PanelContainer = $PromptPanel
 @onready var prompt_label: Label = $PromptPanel/MarginContainer/PromptLabel
@@ -15,9 +18,9 @@ var player_is_nearby: bool = false
 
 
 func _ready() -> void:
-	codeverse_button.pressed.connect(_on_destination_selected.bind("Codeverse City"))
-	novatone_button.pressed.connect(_on_destination_selected.bind("NovaTone Studio"))
-	novacanvas_button.pressed.connect(_on_destination_selected.bind("NovaCanvas Loft"))
+	codeverse_button.pressed.connect(_on_destination_selected.bind(CODEVERSE_CITY_PATH))
+	novatone_button.pressed.connect(_on_destination_selected.bind(NOVATONE_STUDIO_PATH))
+	novacanvas_button.pressed.connect(_on_destination_selected.bind(NOVACANVAS_LOFT_PATH))
 	cancel_button.pressed.connect(close_menu)
 
 	prompt_panel.hide()
@@ -53,6 +56,7 @@ func close_menu() -> void:
 	prompt_panel.visible = player_is_nearby
 
 
-func _on_destination_selected(destination_name: String) -> void:
-	print("Nexus travel selected: %s" % destination_name)
+func _on_destination_selected(world_scene_path: String) -> void:
+	set_interaction_prompt(false, "")
 	close_menu()
+	SceneManager.travel_to(world_scene_path)

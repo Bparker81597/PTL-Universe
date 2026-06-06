@@ -1,13 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://ptl_main_scene"]
+[gd_scene load_steps=6 format=3 uid="uid://ptl_main_scene"]
 
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/worlds/PTL_HQ.tscn" id="1_ptl_hq"]
 [ext_resource type="PackedScene" path="res://scenes/characters/Player.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/PrototypeUI.tscn" id="3_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/nexus_menu.tscn" id="4_nexus_menu"]
 
 [node name="Main" type="Node3D"]
+script = ExtResource("1_main")
 
-[node name="World" parent="." instance=ExtResource("1_ptl_hq")]
+[node name="WorldContainer" type="Node3D" parent="."]
+
+[node name="PTL_HQ" parent="WorldContainer" instance=ExtResource("1_ptl_hq")]
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
 position = Vector3(0, 1.0, 3.5)

@@ -1,0 +1,76 @@
+[gd_scene load_steps=8 format=3 uid="uid://ptl_codeverse_city"]
+
+[ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(18, 0.2, 18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(18, 0.2, 18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_building"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.055, 0.075, 0.095, 1)
+metallic = 0.35
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_structure"]
+albedo_color = Color(0.08, 0.2, 0.3, 1)
+emission_enabled = true
+emission = Color(0.02, 0.25, 0.55, 1)
+emission_energy_multiplier = 0.7
+
+[sub_resource type="Environment" id="Environment_codeverse"]
+background_mode = 1
+background_color = Color(0.015, 0.025, 0.055, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.15, 0.35, 0.65, 1)
+ambient_light_energy = 0.65
+glow_enabled = true
+
+[node name="CodeverseCity" type="Node3D"]
+
+[node name="SpawnPoint" type="Marker3D" parent="."]
+position = Vector3(0, 1, 5.5)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_codeverse")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("StandardMaterial3D_floor")
+
+[node name="CityLight" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.9, -0.35, 0)
+light_color = Color(0.35, 0.65, 1, 1)
+light_energy = 1.5
+
+[node name="WorldName" type="Label3D" parent="."]
+position = Vector3(0, 3.4, -7.8)
+pixel_size = 0.012
+text = "CODEVERSE CITY"
+font_size = 72
+outline_size = 8
+horizontal_alignment = 1
+
+[node name="LeftTower" type="MeshInstance3D" parent="."]
+position = Vector3(-5.5, 2, -2)
+scale = Vector3(2.2, 4, 2.2)
+mesh = SubResource("BoxMesh_building")
+surface_material_override/0 = SubResource("StandardMaterial3D_structure")
+
+[node name="RightTower" type="MeshInstance3D" parent="."]
+position = Vector3(5.5, 2.8, -2.5)
+scale = Vector3(2.4, 5.6, 2.4)
+mesh = SubResource("BoxMesh_building")
+surface_material_override/0 = SubResource("StandardMaterial3D_structure")
+
+[node name="ReturnPortal" parent="." instance=ExtResource("1_return_portal")]
+position = Vector3(0, 2, -5.5)

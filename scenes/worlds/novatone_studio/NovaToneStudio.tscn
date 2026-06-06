@@ -1,0 +1,89 @@
+[gd_scene load_steps=9 format=3 uid="uid://ptl_novatone_studio"]
+
+[ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(18, 0.2, 18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(18, 0.2, 18)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_stage"]
+top_radius = 3.5
+bottom_radius = 3.5
+height = 0.35
+sides = 32
+
+[sub_resource type="SphereMesh" id="SphereMesh_speaker"]
+radius = 0.7
+height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.11, 0.055, 0.13, 1)
+metallic = 0.25
+roughness = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stage"]
+albedo_color = Color(0.35, 0.08, 0.38, 1)
+emission_enabled = true
+emission = Color(0.35, 0.03, 0.4, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="Environment" id="Environment_novatone"]
+background_mode = 1
+background_color = Color(0.045, 0.012, 0.055, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.15, 0.6, 1)
+ambient_light_energy = 0.65
+glow_enabled = true
+
+[node name="NovaToneStudio" type="Node3D"]
+
+[node name="SpawnPoint" type="Marker3D" parent="."]
+position = Vector3(0, 1, 5.5)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_novatone")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("StandardMaterial3D_floor")
+
+[node name="StudioLight" type="OmniLight3D" parent="."]
+position = Vector3(0, 5, 0)
+light_color = Color(1, 0.25, 0.8, 1)
+light_energy = 4.0
+omni_range = 15.0
+
+[node name="WorldName" type="Label3D" parent="."]
+position = Vector3(0, 3.4, -7.8)
+pixel_size = 0.012
+text = "NOVATONE STUDIO"
+font_size = 72
+outline_size = 8
+horizontal_alignment = 1
+
+[node name="Stage" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.18, 0)
+mesh = SubResource("CylinderMesh_stage")
+surface_material_override/0 = SubResource("StandardMaterial3D_stage")
+
+[node name="LeftSpeaker" type="MeshInstance3D" parent="."]
+position = Vector3(-4.5, 1.4, -2)
+scale = Vector3(1.5, 2.8, 1.5)
+mesh = SubResource("SphereMesh_speaker")
+surface_material_override/0 = SubResource("StandardMaterial3D_stage")
+
+[node name="RightSpeaker" type="MeshInstance3D" parent="."]
+position = Vector3(4.5, 1.4, -2)
+scale = Vector3(1.5, 2.8, 1.5)
+mesh = SubResource("SphereMesh_speaker")
+surface_material_override/0 = SubResource("StandardMaterial3D_stage")
+
+[node name="ReturnPortal" parent="." instance=ExtResource("1_return_portal")]
+position = Vector3(0, 2, -5.5)

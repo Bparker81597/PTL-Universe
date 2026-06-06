@@ -91,6 +91,9 @@ metallic = 0.1
 
 [node name="PTL_HQ" type="Node3D"]
 
+[node name="SpawnPoint" type="Marker3D" parent="."]
+position = Vector3(0, 1, 6.8)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_hq")
 

@@ -4,6 +4,8 @@ PTL Universe is a small Godot 4 third-person exploration prototype for the Parke
 
 This first version intentionally stays small. It includes a basic PTL HQ lobby, a placeholder player, simple third-person camera setup, WASD movement, jump, basic lighting, a placeholder portal called **The Nexus**, and a starter UI label.
 
+The Nexus now travels to three small placeholder worlds: Codeverse City, NovaTone Studio, and NovaCanvas Loft. Each destination includes a walk-in portal back to PTL HQ.
+
 ## Open The Project
 
 Open this folder in Godot 4:

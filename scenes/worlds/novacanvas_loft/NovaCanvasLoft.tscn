@@ -1,0 +1,89 @@
+[gd_scene load_steps=9 format=3 uid="uid://ptl_novacanvas_loft"]
+
+[ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(18, 0.2, 18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(18, 0.2, 18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_canvas"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pedestal"]
+top_radius = 0.8
+bottom_radius = 1.0
+height = 1.2
+sides = 24
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.16, 0.17, 0.18, 1)
+metallic = 0.1
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_canvas"]
+albedo_color = Color(0.95, 0.55, 0.18, 1)
+emission_enabled = true
+emission = Color(0.8, 0.25, 0.05, 1)
+emission_energy_multiplier = 0.65
+
+[sub_resource type="Environment" id="Environment_novacanvas"]
+background_mode = 1
+background_color = Color(0.07, 0.075, 0.085, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.7, 0.65, 0.58, 1)
+ambient_light_energy = 0.75
+glow_enabled = true
+
+[node name="NovaCanvasLoft" type="Node3D"]
+
+[node name="SpawnPoint" type="Marker3D" parent="."]
+position = Vector3(0, 1, 5.5)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_novacanvas")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("StandardMaterial3D_floor")
+
+[node name="LoftLight" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-1.0, 0.55, 0)
+light_color = Color(1, 0.8, 0.58, 1)
+light_energy = 1.8
+
+[node name="WorldName" type="Label3D" parent="."]
+position = Vector3(0, 3.4, -7.8)
+pixel_size = 0.012
+text = "NOVACANVAS LOFT"
+font_size = 72
+outline_size = 8
+horizontal_alignment = 1
+
+[node name="ArtPedestal" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("CylinderMesh_pedestal")
+surface_material_override/0 = SubResource("StandardMaterial3D_floor")
+
+[node name="CanvasLeft" type="MeshInstance3D" parent="."]
+position = Vector3(-4, 2, -1.5)
+rotation = Vector3(0, 0.35, 0)
+scale = Vector3(2.5, 3.5, 0.18)
+mesh = SubResource("BoxMesh_canvas")
+surface_material_override/0 = SubResource("StandardMaterial3D_canvas")
+
+[node name="CanvasRight" type="MeshInstance3D" parent="."]
+position = Vector3(4, 2, -1.5)
+rotation = Vector3(0, -0.35, 0)
+scale = Vector3(2.5, 3.5, 0.18)
+mesh = SubResource("BoxMesh_canvas")
+surface_material_override/0 = SubResource("StandardMaterial3D_canvas")
+
+[node name="ReturnPortal" parent="." instance=ExtResource("1_return_portal")]
+position = Vector3(0, 2, -5.5)

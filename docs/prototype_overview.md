@@ -18,17 +18,20 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 `Main.tscn` is the scene Godot runs first.
 
 - `Main` is the root `Node3D`.
-- `World` instances `PTL_HQ.tscn`, which builds the prototype lobby.
+- `WorldContainer` holds exactly one active world scene. `SceneManager` replaces its child when the player travels.
+- `PTL_HQ` is the first child of `WorldContainer`, so the prototype still starts inside headquarters.
 - `Player` instances `Player.tscn`, which gives you a controllable third-person character.
 - `SunLight` is a `DirectionalLight3D` that gives the room basic global lighting.
 - `PrototypeUI` instances the UI scene with the title label.
 - `NexusMenu` instances `nexus_menu.tscn`, which owns the interaction prompt and travel menu.
+- `main.gd` registers `WorldContainer` and the persistent player with `SceneManager` when the game starts.
 
 ## PTL_HQ.tscn
 
 `PTL_HQ.tscn` is the first placeholder world scene. It is still made from simple Godot primitives, but it is arranged to feel more like a futuristic Parker Tech Labs HQ.
 
 - `PTL_HQ` is the root `Node3D` for the lobby.
+- `SpawnPoint` is where the persistent player appears after returning from another world.
 - `WorldEnvironment` sets the dark ambient background color and enables a small glow effect for emissive materials.
 - `Architecture` groups the physical floor, walls, entry header, center floor path, and Nexus room dividers.
 - `Floor` is a large `StaticBody3D` with collision, while `LobbyFloorInset`, `NexusFloorInset`, `CenterPathFloor`, `CenterPathTealLine`, and `CenterPathPurpleLine` create simple primitive floor materials and a guided path toward the portal.
@@ -76,6 +79,30 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `CodeverseButton`, `NovaToneButton`, and `NovaCanvasButton` are placeholder destination choices.
 - `CancelButton` closes the menu without selecting a destination.
 
+## Placeholder World Scenes
+
+Each placeholder world follows the same small structure so future worlds remain predictable.
+
+- `CodeverseCity.tscn` uses cool blue lighting and primitive tower blocks to suggest a digital city.
+- `NovaToneStudio.tscn` uses purple lighting, a cylinder stage, and primitive speaker shapes to suggest a music studio.
+- `NovaCanvasLoft.tscn` uses warm lighting, a pedestal, and box canvases to suggest a creative loft.
+- Each world root is a `Node3D` loaded into `Main/WorldContainer`.
+- Each `SpawnPoint` is a `Marker3D` that tells `SceneManager` where to place the persistent player.
+- Each `Floor` is a `StaticBody3D` with a collision shape and visible primitive mesh.
+- Each lighting node and `WorldEnvironment` gives the placeholder world its own atmosphere.
+- Each `WorldName` is a `Label3D` that clearly identifies the loaded destination.
+- Each `ReturnPortal` instances the shared `systems/portals/ReturnPortal.tscn`.
+
+## ReturnPortal.tscn
+
+`ReturnPortal.tscn` is a reusable walk-in portal shared by all placeholder worlds.
+
+- `ReturnPortal` is an `Area3D` that detects the player without blocking movement.
+- `CollisionShape3D` defines the walk-in detection area.
+- `PortalRing`, `PortalCore`, and `PortalLight` create a visible placeholder portal from Godot primitives.
+- `ReturnLabel` identifies the portal as the route back to PTL HQ.
+- `return_portal.gd` checks for the `player` group and asks `SceneManager` to load PTL HQ.
+
 ## player.gd
 
 `player.gd` controls movement.
@@ -102,12 +129,30 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 
 `nexus_menu.gd` controls both the prompt and travel menu.
 
-- `_ready()` connects each button to its action and hides the prompt/menu at startup.
+- The three scene-path constants point to the real placeholder world scenes.
+- `_ready()` connects each destination button to its scene path and hides the prompt/menu at startup.
 - `set_interaction_prompt()` remembers whether the player is nearby and shows or hides the prompt.
 - `open_menu()` hides the prompt, opens the travel menu, focuses the first option, and pauses the 3D world.
 - `close_menu()` unpauses the world, hides the menu, and restores the prompt if the player is still nearby.
-- `_on_destination_selected()` prints the selected destination to Godot's Output panel, then closes the menu.
+- `_on_destination_selected()` closes the menu and asks `SceneManager` to load the selected world.
 - `_unhandled_input()` lets Escape close the menu.
+
+## scene_manager.gd
+
+`scene_manager.gd` is an autoload, which means Godot creates one persistent `SceneManager` node before `Main` starts.
+
+- `register_world_host()` stores references to `Main/WorldContainer` and the persistent player.
+- `travel_to()` loads a world scene, removes the previous world from `WorldContainer`, and adds the new world.
+- `return_to_ptl_hq()` is a convenience function used by every return portal.
+- `move_player_to_spawn()` finds the new world's `SpawnPoint`, moves the existing player there, and clears old movement velocity.
+- Only the world is replaced. The player, third-person camera, title UI, and Nexus menu remain alive.
+
+## main.gd
+
+`main.gd` is attached to the `Main` root node.
+
+- `_ready()` registers `WorldContainer` and `Player` with the autoloaded `SceneManager`.
+- This keeps scene-management setup in one obvious place without adding travel logic to the player.
 
 ## Controls
 
