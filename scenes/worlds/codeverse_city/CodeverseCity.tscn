@@ -1,39 +1,61 @@
-[gd_scene load_steps=8 format=3 uid="uid://ptl_codeverse_city"]
+[gd_scene load_steps=11 format=3 uid="uid://ptl_codeverse_city"]
 
 [ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(18, 0.2, 18)
+size = Vector3(22, 0.2, 22)
 
 [sub_resource type="BoxMesh" id="BoxMesh_floor"]
-size = Vector3(18, 0.2, 18)
+size = Vector3(22, 0.2, 22)
 
-[sub_resource type="BoxMesh" id="BoxMesh_building"]
-size = Vector3(1, 1, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_unit"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_panel"]
+size = Vector2(2.6, 1.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
-albedo_color = Color(0.055, 0.075, 0.095, 1)
-metallic = 0.35
-roughness = 0.4
+albedo_color = Color(0.018, 0.028, 0.045, 1)
+metallic = 0.55
+roughness = 0.32
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_structure"]
-albedo_color = Color(0.08, 0.2, 0.3, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_building"]
+albedo_color = Color(0.025, 0.08, 0.14, 1)
+metallic = 0.45
+roughness = 0.38
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cyan"]
+albedo_color = Color(0.1, 0.9, 1, 1)
 emission_enabled = true
-emission = Color(0.02, 0.25, 0.55, 1)
-emission_energy_multiplier = 0.7
+emission = Color(0.02, 0.65, 1, 1)
+emission_energy_multiplier = 2.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blue"]
+albedo_color = Color(0.15, 0.35, 1, 1)
+emission_enabled = true
+emission = Color(0.04, 0.2, 1, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hologram"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.1, 0.8, 1, 0.3)
+emission_enabled = true
+emission = Color(0.02, 0.55, 1, 1)
+emission_energy_multiplier = 1.6
 
 [sub_resource type="Environment" id="Environment_codeverse"]
 background_mode = 1
-background_color = Color(0.015, 0.025, 0.055, 1)
+background_color = Color(0.004, 0.01, 0.025, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.15, 0.35, 0.65, 1)
-ambient_light_energy = 0.65
+ambient_light_color = Color(0.08, 0.28, 0.55, 1)
+ambient_light_energy = 0.6
 glow_enabled = true
+glow_intensity = 0.55
 
 [node name="CodeverseCity" type="Node3D"]
 
 [node name="SpawnPoint" type="Marker3D" parent="."]
-position = Vector3(0, 1, 5.5)
+position = Vector3(0, 1, 7)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_codeverse")
@@ -47,30 +69,162 @@ shape = SubResource("BoxShape3D_floor")
 mesh = SubResource("BoxMesh_floor")
 surface_material_override/0 = SubResource("StandardMaterial3D_floor")
 
-[node name="CityLight" type="DirectionalLight3D" parent="."]
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="CityLight" type="DirectionalLight3D" parent="Lighting"]
 rotation = Vector3(-0.9, -0.35, 0)
-light_color = Color(0.35, 0.65, 1, 1)
-light_energy = 1.5
+light_color = Color(0.25, 0.55, 1, 1)
+light_energy = 1.25
+
+[node name="CyanFill" type="OmniLight3D" parent="Lighting"]
+position = Vector3(-5, 4, 0)
+light_color = Color(0.05, 0.9, 1, 1)
+light_energy = 3.0
+omni_range = 13.0
+
+[node name="BlueFill" type="OmniLight3D" parent="Lighting"]
+position = Vector3(6, 5, -4)
+light_color = Color(0.1, 0.25, 1, 1)
+light_energy = 3.2
+omni_range = 14.0
 
 [node name="WorldName" type="Label3D" parent="."]
-position = Vector3(0, 3.4, -7.8)
+position = Vector3(0, 4.4, -9.5)
 pixel_size = 0.012
+modulate = Color(0.4, 0.9, 1, 1)
 text = "CODEVERSE CITY"
 font_size = 72
 outline_size = 8
 horizontal_alignment = 1
 
-[node name="LeftTower" type="MeshInstance3D" parent="."]
-position = Vector3(-5.5, 2, -2)
-scale = Vector3(2.2, 4, 2.2)
-mesh = SubResource("BoxMesh_building")
-surface_material_override/0 = SubResource("StandardMaterial3D_structure")
+[node name="GridLines" type="Node3D" parent="."]
 
-[node name="RightTower" type="MeshInstance3D" parent="."]
-position = Vector3(5.5, 2.8, -2.5)
-scale = Vector3(2.4, 5.6, 2.4)
-mesh = SubResource("BoxMesh_building")
-surface_material_override/0 = SubResource("StandardMaterial3D_structure")
+[node name="GridX1" type="MeshInstance3D" parent="GridLines"]
+position = Vector3(0, 0.03, -8)
+scale = Vector3(21, 0.035, 0.06)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan")
+
+[node name="GridX2" type="MeshInstance3D" parent="GridLines"]
+position = Vector3(0, 0.03, -4)
+scale = Vector3(21, 0.035, 0.06)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_blue")
+
+[node name="GridX3" type="MeshInstance3D" parent="GridLines"]
+position = Vector3(0, 0.03, 0)
+scale = Vector3(21, 0.035, 0.06)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan")
+
+[node name="GridX4" type="MeshInstance3D" parent="GridLines"]
+position = Vector3(0, 0.03, 4)
+scale = Vector3(21, 0.035, 0.06)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_blue")
+
+[node name="GridZ1" type="MeshInstance3D" parent="GridLines"]
+position = Vector3(-8, 0.035, 0)
+scale = Vector3(0.06, 0.035, 21)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_blue")
+
+[node name="GridZ2" type="MeshInstance3D" parent="GridLines"]
+position = Vector3(-4, 0.035, 0)
+scale = Vector3(0.06, 0.035, 21)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan")
+
+[node name="GridZ3" type="MeshInstance3D" parent="GridLines"]
+position = Vector3(4, 0.035, 0)
+scale = Vector3(0.06, 0.035, 21)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan")
+
+[node name="GridZ4" type="MeshInstance3D" parent="GridLines"]
+position = Vector3(8, 0.035, 0)
+scale = Vector3(0.06, 0.035, 21)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_blue")
+
+[node name="DigitalSkyline" type="Node3D" parent="."]
+
+[node name="TowerLeftTall" type="MeshInstance3D" parent="DigitalSkyline"]
+position = Vector3(-8, 3.5, -6.5)
+scale = Vector3(2.2, 7, 2.2)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_building")
+
+[node name="TowerLeftMid" type="MeshInstance3D" parent="DigitalSkyline"]
+position = Vector3(-5, 2.4, -8)
+scale = Vector3(1.8, 4.8, 1.8)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_building")
+
+[node name="TowerRightTall" type="MeshInstance3D" parent="DigitalSkyline"]
+position = Vector3(8, 4.3, -6.5)
+scale = Vector3(2.2, 8.6, 2.2)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_building")
+
+[node name="TowerRightMid" type="MeshInstance3D" parent="DigitalSkyline"]
+position = Vector3(5, 2.8, -8)
+scale = Vector3(1.8, 5.6, 1.8)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_building")
+
+[node name="TowerAccentLeft" type="MeshInstance3D" parent="DigitalSkyline"]
+position = Vector3(-8, 4, -5.35)
+scale = Vector3(1.7, 0.12, 0.06)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan")
+
+[node name="TowerAccentRight" type="MeshInstance3D" parent="DigitalSkyline"]
+position = Vector3(8, 5, -5.35)
+scale = Vector3(1.7, 0.12, 0.06)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_blue")
+
+[node name="FloatingCodePanels" type="Node3D" parent="."]
+
+[node name="PanelLeft" type="MeshInstance3D" parent="FloatingCodePanels"]
+position = Vector3(-5.2, 2.6, 1)
+rotation = Vector3(0, 0.45, 0)
+mesh = SubResource("QuadMesh_panel")
+surface_material_override/0 = SubResource("StandardMaterial3D_hologram")
+
+[node name="CodeLeft" type="Label3D" parent="FloatingCodePanels"]
+position = Vector3(-5.2, 2.6, 0.95)
+rotation = Vector3(0, 0.45, 0)
+pixel_size = 0.006
+text = "0101  PTL://NODE\nRUN  BUILD  CREATE"
+font_size = 34
+outline_size = 3
+horizontal_alignment = 1
+
+[node name="PanelRight" type="MeshInstance3D" parent="FloatingCodePanels"]
+position = Vector3(5.4, 3.2, 0)
+rotation = Vector3(0, -0.45, 0)
+mesh = SubResource("QuadMesh_panel")
+surface_material_override/0 = SubResource("StandardMaterial3D_hologram")
+
+[node name="CodeRight" type="Label3D" parent="FloatingCodePanels"]
+position = Vector3(5.4, 3.2, -0.05)
+rotation = Vector3(0, -0.45, 0)
+pixel_size = 0.006
+text = "CITY STATUS: ONLINE\nACCESS: CREATOR"
+font_size = 34
+outline_size = 3
+horizontal_alignment = 1
+
+[node name="HolographicSign" type="Label3D" parent="."]
+position = Vector3(0, 2.3, -2.5)
+pixel_size = 0.009
+modulate = Color(0.15, 0.95, 1, 0.85)
+text = "CODE DISTRICT 01"
+font_size = 52
+outline_size = 5
+horizontal_alignment = 1
 
 [node name="ReturnPortal" parent="." instance=ExtResource("1_return_portal")]
-position = Vector3(0, 2, -5.5)
+position = Vector3(0, 2, -6.5)

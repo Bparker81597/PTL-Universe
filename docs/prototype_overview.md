@@ -83,15 +83,36 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 
 Each placeholder world follows the same small structure so future worlds remain predictable.
 
-- `CodeverseCity.tscn` uses cool blue lighting and primitive tower blocks to suggest a digital city.
-- `NovaToneStudio.tscn` uses purple lighting, a cylinder stage, and primitive speaker shapes to suggest a music studio.
-- `NovaCanvasLoft.tscn` uses warm lighting, a pedestal, and box canvases to suggest a creative loft.
+- `CodeverseCity.tscn` uses a dark metallic floor, cyan/blue grid strips, digital skyline blocks, floating hologram quads, code labels, and a holographic district sign.
+- `NovaToneStudio.tscn` uses purple/blue lighting, a primitive mixing desk with glowing faders, speaker cabinets with cylinder woofers, and a large soundwave panel built from box bars.
+- `NovaCanvasLoft.tscn` uses warm pink/purple/teal lighting, primitive wood easels, glowing canvases, a large painted back canvas, and suspended sphere meshes as placeholder floating paint particles.
 - Each world root is a `Node3D` loaded into `Main/WorldContainer`.
 - Each `SpawnPoint` is a `Marker3D` that tells `SceneManager` where to place the persistent player.
 - Each `Floor` is a `StaticBody3D` with a collision shape and visible primitive mesh.
 - Each lighting node and `WorldEnvironment` gives the placeholder world its own atmosphere.
 - Each `WorldName` is a `Label3D` that clearly identifies the loaded destination.
 - Each `ReturnPortal` instances the shared `systems/portals/ReturnPortal.tscn`.
+
+### Codeverse City Visual Groups
+
+- `GridLines` groups thin emissive box meshes arranged across the dark floor.
+- `DigitalSkyline` groups simple box towers and bright facade accents.
+- `FloatingCodePanels` combines transparent `QuadMesh` panels with `Label3D` code text.
+- `HolographicSign` is a standalone glowing `Label3D` that helps the space read like a digital district.
+
+### NovaTone Studio Visual Groups
+
+- `MixingDesk` groups the desk base, angled control surface, and glowing box-mesh faders.
+- `Speakers` groups dark box cabinets with emissive cylinder meshes used as placeholder woofers.
+- `SoundwavePanel` uses a dark backing panel and differently sized emissive bars to form a readable soundwave.
+- `Lighting` combines purple and blue `OmniLight3D` nodes to create a studio atmosphere.
+
+### NovaCanvas Loft Visual Groups
+
+- `Easels` groups thin wood-colored box meshes and glowing canvas panels.
+- `BackCanvas` is a large neutral box panel decorated with pink and teal primitive strokes.
+- `FloatingPaintParticles` groups small emissive sphere meshes suspended around the room.
+- `Lighting` combines a warm directional key light with pink and teal fill lights.
 
 ## ReturnPortal.tscn
 

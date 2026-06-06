@@ -1,15 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://ptl_novacanvas_loft"]
+[gd_scene load_steps=13 format=3 uid="uid://ptl_novacanvas_loft"]
 
 [ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(18, 0.2, 18)
+size = Vector3(20, 0.2, 20)
 
 [sub_resource type="BoxMesh" id="BoxMesh_floor"]
-size = Vector3(18, 0.2, 18)
+size = Vector3(20, 0.2, 20)
 
-[sub_resource type="BoxMesh" id="BoxMesh_canvas"]
-size = Vector3(1, 1, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_unit"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_pedestal"]
 top_radius = 0.8
@@ -17,29 +16,54 @@ bottom_radius = 1.0
 height = 1.2
 sides = 24
 
+[sub_resource type="SphereMesh" id="SphereMesh_particle"]
+radius = 0.12
+height = 0.24
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
-albedo_color = Color(0.16, 0.17, 0.18, 1)
+albedo_color = Color(0.12, 0.105, 0.145, 1)
 metallic = 0.1
-roughness = 0.35
+roughness = 0.38
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
+albedo_color = Color(0.28, 0.14, 0.09, 1)
+roughness = 0.72
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pink"]
+albedo_color = Color(1, 0.2, 0.6, 1)
+emission_enabled = true
+emission = Color(0.8, 0.05, 0.35, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_purple"]
+albedo_color = Color(0.62, 0.2, 1, 1)
+emission_enabled = true
+emission = Color(0.45, 0.06, 0.9, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_teal"]
+albedo_color = Color(0.1, 0.9, 0.75, 1)
+emission_enabled = true
+emission = Color(0.03, 0.65, 0.5, 1)
+emission_energy_multiplier = 1.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_canvas"]
-albedo_color = Color(0.95, 0.55, 0.18, 1)
-emission_enabled = true
-emission = Color(0.8, 0.25, 0.05, 1)
-emission_energy_multiplier = 0.65
+albedo_color = Color(0.92, 0.9, 0.82, 1)
+roughness = 0.8
 
 [sub_resource type="Environment" id="Environment_novacanvas"]
 background_mode = 1
-background_color = Color(0.07, 0.075, 0.085, 1)
+background_color = Color(0.055, 0.035, 0.07, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.7, 0.65, 0.58, 1)
-ambient_light_energy = 0.75
+ambient_light_color = Color(0.6, 0.35, 0.55, 1)
+ambient_light_energy = 0.7
 glow_enabled = true
+glow_intensity = 0.42
 
 [node name="NovaCanvasLoft" type="Node3D"]
 
 [node name="SpawnPoint" type="Marker3D" parent="."]
-position = Vector3(0, 1, 5.5)
+position = Vector3(0, 1, 7)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_novacanvas")
@@ -53,37 +77,137 @@ shape = SubResource("BoxShape3D_floor")
 mesh = SubResource("BoxMesh_floor")
 surface_material_override/0 = SubResource("StandardMaterial3D_floor")
 
-[node name="LoftLight" type="DirectionalLight3D" parent="."]
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="WarmKey" type="DirectionalLight3D" parent="Lighting"]
 rotation = Vector3(-1.0, 0.55, 0)
-light_color = Color(1, 0.8, 0.58, 1)
-light_energy = 1.8
+light_color = Color(1, 0.72, 0.52, 1)
+light_energy = 1.5
+
+[node name="PinkFill" type="OmniLight3D" parent="Lighting"]
+position = Vector3(-5, 4, 0)
+light_color = Color(1, 0.2, 0.55, 1)
+light_energy = 2.6
+omni_range = 12.0
+
+[node name="TealFill" type="OmniLight3D" parent="Lighting"]
+position = Vector3(5, 4, -2)
+light_color = Color(0.1, 0.9, 0.75, 1)
+light_energy = 2.5
+omni_range = 12.0
 
 [node name="WorldName" type="Label3D" parent="."]
-position = Vector3(0, 3.4, -7.8)
+position = Vector3(0, 4.2, -8.8)
 pixel_size = 0.012
+modulate = Color(1, 0.65, 0.85, 1)
 text = "NOVACANVAS LOFT"
 font_size = 72
 outline_size = 8
 horizontal_alignment = 1
 
-[node name="ArtPedestal" type="MeshInstance3D" parent="."]
-position = Vector3(0, 0.6, 0)
+[node name="CenterPedestal" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.6, 0.5)
 mesh = SubResource("CylinderMesh_pedestal")
-surface_material_override/0 = SubResource("StandardMaterial3D_floor")
+surface_material_override/0 = SubResource("StandardMaterial3D_purple")
 
-[node name="CanvasLeft" type="MeshInstance3D" parent="."]
-position = Vector3(-4, 2, -1.5)
-rotation = Vector3(0, 0.35, 0)
-scale = Vector3(2.5, 3.5, 0.18)
-mesh = SubResource("BoxMesh_canvas")
+[node name="Easels" type="Node3D" parent="."]
+
+[node name="LeftEaselPost" type="MeshInstance3D" parent="Easels"]
+position = Vector3(-5, 1.8, -1.2)
+rotation = Vector3(0, 0, 0.12)
+scale = Vector3(0.18, 3.6, 0.18)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="LeftEaselLeg" type="MeshInstance3D" parent="Easels"]
+position = Vector3(-5.8, 0.9, -1.2)
+rotation = Vector3(0, 0, -0.55)
+scale = Vector3(0.18, 2.2, 0.18)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="LeftCanvas" type="MeshInstance3D" parent="Easels"]
+position = Vector3(-5, 2.15, -1)
+rotation = Vector3(0, 0.2, 0)
+scale = Vector3(3.1, 3.8, 0.18)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_pink")
+
+[node name="RightEaselPost" type="MeshInstance3D" parent="Easels"]
+position = Vector3(5, 1.8, -1.2)
+rotation = Vector3(0, 0, -0.12)
+scale = Vector3(0.18, 3.6, 0.18)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="RightEaselLeg" type="MeshInstance3D" parent="Easels"]
+position = Vector3(5.8, 0.9, -1.2)
+rotation = Vector3(0, 0, 0.55)
+scale = Vector3(0.18, 2.2, 0.18)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="RightCanvas" type="MeshInstance3D" parent="Easels"]
+position = Vector3(5, 2.15, -1)
+rotation = Vector3(0, -0.2, 0)
+scale = Vector3(3.1, 3.8, 0.18)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_teal")
+
+[node name="BackCanvas" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.6, -7.8)
+scale = Vector3(7.5, 4, 0.2)
+mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_canvas")
 
-[node name="CanvasRight" type="MeshInstance3D" parent="."]
-position = Vector3(4, 2, -1.5)
-rotation = Vector3(0, -0.35, 0)
-scale = Vector3(2.5, 3.5, 0.18)
-mesh = SubResource("BoxMesh_canvas")
-surface_material_override/0 = SubResource("StandardMaterial3D_canvas")
+[node name="BackCanvasPinkStroke" type="MeshInstance3D" parent="."]
+position = Vector3(-1.8, 2.8, -7.55)
+rotation = Vector3(0, 0, -0.45)
+scale = Vector3(0.45, 2.5, 0.12)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_pink")
+
+[node name="BackCanvasTealStroke" type="MeshInstance3D" parent="."]
+position = Vector3(1.4, 2.4, -7.55)
+rotation = Vector3(0, 0, 0.65)
+scale = Vector3(0.45, 2.2, 0.12)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_teal")
+
+[node name="FloatingPaintParticles" type="Node3D" parent="."]
+
+[node name="PinkParticle1" type="MeshInstance3D" parent="FloatingPaintParticles"]
+position = Vector3(-2.8, 3.1, 0.4)
+scale = Vector3(1.4, 1.4, 1.4)
+mesh = SubResource("SphereMesh_particle")
+surface_material_override/0 = SubResource("StandardMaterial3D_pink")
+
+[node name="PinkParticle2" type="MeshInstance3D" parent="FloatingPaintParticles"]
+position = Vector3(1.4, 3.8, 1)
+mesh = SubResource("SphereMesh_particle")
+surface_material_override/0 = SubResource("StandardMaterial3D_pink")
+
+[node name="PurpleParticle1" type="MeshInstance3D" parent="FloatingPaintParticles"]
+position = Vector3(-0.8, 2.9, -2.2)
+scale = Vector3(1.2, 1.2, 1.2)
+mesh = SubResource("SphereMesh_particle")
+surface_material_override/0 = SubResource("StandardMaterial3D_purple")
+
+[node name="PurpleParticle2" type="MeshInstance3D" parent="FloatingPaintParticles"]
+position = Vector3(3.2, 3.3, -1.2)
+mesh = SubResource("SphereMesh_particle")
+surface_material_override/0 = SubResource("StandardMaterial3D_purple")
+
+[node name="TealParticle1" type="MeshInstance3D" parent="FloatingPaintParticles"]
+position = Vector3(2.6, 2.7, 2)
+scale = Vector3(1.3, 1.3, 1.3)
+mesh = SubResource("SphereMesh_particle")
+surface_material_override/0 = SubResource("StandardMaterial3D_teal")
+
+[node name="TealParticle2" type="MeshInstance3D" parent="FloatingPaintParticles"]
+position = Vector3(-3.4, 3.7, -2)
+mesh = SubResource("SphereMesh_particle")
+surface_material_override/0 = SubResource("StandardMaterial3D_teal")
 
 [node name="ReturnPortal" parent="." instance=ExtResource("1_return_portal")]
 position = Vector3(0, 2, -5.5)
