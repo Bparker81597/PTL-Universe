@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ptl_wonder_labs"]
+[gd_scene load_steps=16 format=3 uid="uid://ptl_wonder_labs"]
 
 [ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
 [ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Desk_Medium.gltf" id="2_desk"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Chest.gltf" id="7_chest"]
 [ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_HealthPack_Tube.gltf" id="8_health_tube"]
 [ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Syringe.gltf" id="9_syringe"]
+[ext_resource type="PackedScene" path="res://characters/maizeverse/MaizeVerse.tscn" id="10_maize"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(20, 0.2, 20)
@@ -119,3 +120,7 @@ scale = Vector3(2, 2, 2)
 
 [node name="ReturnPortal" parent="." instance=ExtResource("1_return_portal")]
 position = Vector3(0, 2, -6)
+
+[node name="MaizeVerse" parent="." instance=ExtResource("10_maize")]
+position = Vector3(-4, 0, -1.5)
+rotation = Vector3(0, 0.75, 0)

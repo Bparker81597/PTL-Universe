@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/characters/NPC_Base.tscn" id="1_base"]
+
+[sub_resource type="StandardMaterial3D" id="Material_purple"]
+albedo_color = Color(0.55, 0.18, 0.85, 1)
+metallic = 0.25
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Material_teal"]
+albedo_color = Color(0.1, 0.9, 0.78, 1)
+emission_enabled = true
+emission = Color(0.03, 0.35, 0.3, 1)
+emission_energy_multiplier = 0.8
+
+[node name="BrittanyVerse" instance=ExtResource("1_base")]
+npc_name = "BrittanyVerse"
+dialogue_text = "The Nexus connects more than worlds. It connects ideas."
+
+[node name="Body" parent="." index="0"]
+surface_material_override/0 = SubResource("Material_purple")
+
+[node name="Head" parent="." index="1"]
+surface_material_override/0 = SubResource("Material_teal")

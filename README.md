@@ -10,6 +10,8 @@ The prototype also includes a simple objective UI. The first investigation drive
 
 The first investigation, **The Corrupted Signal**, follows this chain: investigate clue A, talk to Codeverse Mentor, talk to NovaTone Guide, talk to NovaCanvas Guide, then return to PTL HQ to reveal **GL!TCH**. Press `Tab` to open the Investigation Journal.
 
+Placeholder cast scenes are available for BrittanyVerse, NateVerse, BrooklynVerse, MaizeVerse, and Gl!tch. The first four are placed as interactable NPCs; Gl!tch remains hidden and non-interactable.
+
 Quaternius Sci-Fi Essentials glTF props are imported under `assets/quaternius/sci_fi_essentials/` and used as environmental storytelling props in PTL HQ, Codeverse City, and Wonder Labs. No weapon models or combat systems were added.
 
 ## Open The Project

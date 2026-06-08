@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://ptl_novacanvas_loft"]
+[gd_scene load_steps=17 format=3 uid="uid://ptl_novacanvas_loft"]
 
 [ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
 [ext_resource type="Script" path="res://systems/objectives/objective_interactable.gd" id="2_objective"]
 [ext_resource type="PackedScene" path="res://scenes/characters/NPC_Base.tscn" id="3_npc"]
+[ext_resource type="PackedScene" path="res://characters/brooklynverse/BrooklynVerse.tscn" id="4_brooklyn"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(20, 0.2, 20)
@@ -234,3 +235,7 @@ dialogue_text = "The canvas keeps reacting to invisible energy."
 after_clue_dialogue_text = "This energy feels alive."
 dialogue_clue_id = "signal_fragment_c"
 investigation_step_id = "talk_novacanvas_guide"
+
+[node name="BrooklynVerse" parent="." instance=ExtResource("4_brooklyn")]
+position = Vector3(4.4, 0, 3.8)
+rotation = Vector3(0, -0.55, 0)

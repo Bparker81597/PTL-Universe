@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://ptl_codeverse_city"]
+[gd_scene load_steps=22 format=3 uid="uid://ptl_codeverse_city"]
 
 [ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
 [ext_resource type="Script" path="res://systems/objectives/objective_interactable.gd" id="2_objective"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Barrel1.gltf" id="7_barrel"]
 [ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Enemy_EyeDrone.gltf" id="8_eye_drone"]
 [ext_resource type="PackedScene" path="res://scenes/characters/NPC_Base.tscn" id="9_npc"]
+[ext_resource type="PackedScene" path="res://characters/nateverse/NateVerse.tscn" id="10_nate"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(22, 0.2, 22)
@@ -294,3 +295,7 @@ dialogue_text = "Something is corrupting the city systems."
 after_clue_dialogue_text = "This signal is spreading beyond Codeverse."
 dialogue_clue_id = "signal_fragment_a"
 investigation_step_id = "talk_codeverse_mentor"
+
+[node name="NateVerse" parent="." instance=ExtResource("10_nate")]
+position = Vector3(4.5, 0, 3.8)
+rotation = Vector3(0, -0.55, 0)

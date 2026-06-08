@@ -53,6 +53,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `InteractionArea/CollisionShape3D` uses a large sphere to define how close the player must be before the prompt appears.
 - Pressing `E` at `InteractionArea` completes the PTL HQ objective, opens the Nexus menu, and lets the player choose a destination.
 - `QuaterniusOfficeProps` instances imported `Prop_Desk_L`, `Prop_Chair`, `Prop_Locker`, `Prop_Shelves_WideTall`, and `Prop_Shelves_ThinTall` models.
+- `BrittanyVerse` is an interactable placeholder cast member near the lobby operations area.
 
 ## Player.tscn
 
@@ -93,6 +94,18 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `_unhandled_input()` opens the dialogue window when the player is nearby and presses `E`, then asks `InvestigationManager` whether the conversation advances the chain.
 - `_on_body_exited()` hides the prompt when the player walks away.
 - `_get_current_dialogue()` chooses the before-clue or after-clue line based on whether the configured clue has been discovered.
+
+## Placeholder Cast Scenes
+
+Each main cast scene instances `NPC_Base.tscn`, so it automatically has a floating name, proximity prompt, and dialogue support.
+
+- `characters/brittanyverse/BrittanyVerse.tscn` uses a purple capsule body and teal glowing head. BrittanyVerse is placed in PTL HQ.
+- `characters/nateverse/NateVerse.tscn` uses a blue capsule body and cyan glowing head. NateVerse is placed in Codeverse City.
+- `characters/brooklynverse/BrooklynVerse.tscn` uses a pink capsule body and lavender glowing head. BrooklynVerse is placed in NovaCanvas Loft.
+- `characters/maizeverse/MaizeVerse.tscn` uses a blue-green capsule body and white glowing head. MaizeVerse is placed in Wonder Labs.
+- `characters/glitch/Glitch.tscn` uses a black capsule body and red glowing head. Gl!tch is hidden, has processing disabled, and has its interaction area disabled until a later reveal.
+
+Future character art can replace the primitive `Body` and `Head` meshes without rewriting interaction code.
 
 ## DialogueWindow.tscn
 
@@ -152,6 +165,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `StaticEyeDroneScanner` uses the EyeDrone model only as a non-moving scanner prop.
 - `CorruptedCodePanel` is an `Area3D` clue object near the left code panel. It unlocks `Signal Fragment A`.
 - `CodeverseMentor` says `Something is corrupting the city systems.` before clue A and `This signal is spreading beyond Codeverse.` after clue A. The after-clue conversation unlocks `Signal Fragment B`.
+- `NateVerse` is an additional interactable cast member placed away from the investigation mentor.
 
 ### NovaTone Studio Visual Groups
 
@@ -170,6 +184,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `Lighting` combines a warm directional key light with pink and teal fill lights.
 - `GlowingCanvas` remains a simple placeholder interactable around the large back canvas.
 - `NovaCanvasGuide` says `The canvas keeps reacting to invisible energy.` before clue C and `This energy feels alive.` after clue C. The after-clue conversation sets the objective to `Return to PTL HQ`.
+- `BrooklynVerse` is an additional interactable cast member in the open studio area.
 
 ### Wonder Labs Visual Groups
 
@@ -177,6 +192,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `QuaterniusLabProps` instances `Prop_Desk_Medium`, `Prop_Chair`, `Prop_Shelves_WideTall`, `Prop_Shelves_WideShort`, `Prop_KeyCard`, `Prop_Chest`, `Prop_HealthPack_Tube`, and `Prop_Syringe`.
 - `AccessKeycard`, `ScannerHealthTube`, and `ScannerSyringe` are visual storytelling props only.
 - `ReturnPortal` keeps the same portal-back-to-PTL-HQ behavior as the other placeholder worlds.
+- `MaizeVerse` is an interactable cast member near the scanner platform. The existing lab floor provides enough room, so no additional room was needed.
 
 ## Quaternius Sci-Fi Essentials Assets
 

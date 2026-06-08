@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/characters/NPC_Base.tscn" id="1_base"]
+
+[sub_resource type="StandardMaterial3D" id="Material_blue_green"]
+albedo_color = Color(0.02, 0.55, 0.6, 1)
+metallic = 0.28
+roughness = 0.34
+
+[sub_resource type="StandardMaterial3D" id="Material_white"]
+albedo_color = Color(0.92, 0.98, 1, 1)
+emission_enabled = true
+emission = Color(0.15, 0.32, 0.35, 1)
+emission_energy_multiplier = 0.55
+
+[node name="MaizeVerse" instance=ExtResource("1_base")]
+npc_name = "MaizeVerse"
+dialogue_text = "Wonder Labs is still analyzing the strange energy."
+
+[node name="Body" parent="." index="0"]
+surface_material_override/0 = SubResource("Material_blue_green")
+
+[node name="Head" parent="." index="1"]
+surface_material_override/0 = SubResource("Material_white")

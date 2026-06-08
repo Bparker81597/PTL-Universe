@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/characters/NPC_Base.tscn" id="1_base"]
+
+[sub_resource type="StandardMaterial3D" id="Material_pink"]
+albedo_color = Color(1, 0.2, 0.58, 1)
+metallic = 0.15
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Material_lavender"]
+albedo_color = Color(0.72, 0.55, 1, 1)
+emission_enabled = true
+emission = Color(0.3, 0.14, 0.55, 1)
+emission_energy_multiplier = 0.8
+
+[node name="BrooklynVerse" instance=ExtResource("1_base")]
+npc_name = "BrooklynVerse"
+dialogue_text = "Every canvas here is picking up a different signal."
+
+[node name="Body" parent="." index="0"]
+surface_material_override/0 = SubResource("Material_pink")
+
+[node name="Head" parent="." index="1"]
+surface_material_override/0 = SubResource("Material_lavender")

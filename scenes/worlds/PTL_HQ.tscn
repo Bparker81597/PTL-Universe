@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ptl_hq_scene"]
+[gd_scene load_steps=26 format=3 uid="uid://ptl_hq_scene"]
 
 [ext_resource type="Script" path="res://systems/portals/nexus_portal.gd" id="1_nexus_portal"]
 [ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Desk_L.gltf" id="2_desk_l"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Locker.gltf" id="4_locker"]
 [ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Shelves_WideTall.gltf" id="5_shelf_wide"]
 [ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Shelves_ThinTall.gltf" id="6_shelf_thin"]
+[ext_resource type="PackedScene" path="res://characters/brittanyverse/BrittanyVerse.tscn" id="7_brittany"]
 
 [sub_resource type="Environment" id="Environment_hq"]
 background_mode = 1
@@ -508,3 +509,7 @@ rotation = Vector3(0, 1.5708, 0)
 [node name="ArchiveShelfThin" parent="QuaterniusOfficeProps" instance=ExtResource("6_shelf_thin")]
 position = Vector3(10.7, 0, -7)
 rotation = Vector3(0, -1.5708, 0)
+
+[node name="BrittanyVerse" parent="." instance=ExtResource("7_brittany")]
+position = Vector3(-4.2, 0, 5.2)
+rotation = Vector3(0, 0.7, 0)
