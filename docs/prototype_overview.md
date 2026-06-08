@@ -27,6 +27,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `ObjectiveUI` instances `ObjectiveUI.tscn`, which shows the active objective and short interaction messages.
 - `NexusMenu` instances `nexus_menu.tscn`, which owns the interaction prompt and travel menu.
 - `InvestigationJournal` instances `InvestigationJournal.tscn`, which opens with Tab and summarizes clues, lore, and investigation progress.
+- `DialogueWindow` instances `DialogueWindow.tscn`, which stays available while worlds are swapped and displays NPC conversations.
 - `main.gd` registers `WorldContainer` and the persistent player with `SceneManager` when the game starts.
 
 ## PTL_HQ.tscn
@@ -69,6 +70,43 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `PrototypeUI` is a `CanvasLayer`, so its children draw on top of the 3D scene.
 - `TitleLabel` displays `PTL Universe Prototype`.
 
+## NPC_Base.tscn
+
+`NPC_Base.tscn` is the reusable starting point for non-player characters.
+
+- `NPC_Base` is the root `Node3D`. A world can instance this scene and change its exported name, prompt, and dialogue without editing the base scene.
+- `Body` is a capsule mesh and `Head` is a sphere mesh, keeping the NPC placeholder-friendly and easy to replace later.
+- `NameLabel` is a `Label3D` above the character. `NPC_Base.gd` updates it from the exported `npc_name`.
+- `InteractionArea` is an `Area3D` that detects when the player is close enough to talk.
+- `InteractionArea/CollisionShape3D` uses a cylinder-shaped interaction range and does not physically block the player.
+
+## NPC_Base.gd
+
+`NPC_Base.gd` controls every instance of the reusable NPC scene.
+
+- `npc_name`, `dialogue_text`, and `interaction_prompt` are exported properties, so each NPC can be configured in its world scene.
+- `_ready()` updates the floating name, connects the interaction area, and finds the shared prompt and dialogue UI through groups.
+- `_on_body_entered()` checks for the `player` group and shows `Press E to talk to [name]`.
+- `_unhandled_input()` opens the dialogue window when the player is nearby and presses `E`.
+- `_on_body_exited()` hides the prompt when the player walks away.
+
+## DialogueWindow.tscn
+
+`DialogueWindow.tscn` is the simple persistent conversation UI.
+
+- `DialogueWindow` is a `CanvasLayer` in the `dialogue_ui` group, so NPCs can find it without fragile node paths.
+- `DialoguePanel` anchors a compact dialogue box near the bottom-center of the screen.
+- `SpeakerLabel` displays the NPC name and `DialogueLabel` displays the configured dialogue text.
+- `CloseButton` closes the conversation and returns control to the player.
+
+## dialogue_window.gd
+
+`dialogue_window.gd` controls the shared dialogue window.
+
+- `show_dialogue()` fills in the speaker and message, shows the panel, focuses the Close button, and pauses the 3D world.
+- `close_dialogue()` hides the panel and unpauses the world.
+- `_unhandled_input()` lets Escape close an open conversation.
+
 ## nexus_menu.tscn
 
 `nexus_menu.tscn` is a separate reusable UI scene for Nexus interactions.
@@ -110,6 +148,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `StaticEyeDroneScanner` uses the EyeDrone model only as a non-moving scanner prop.
 - `CorruptedCodePanel` is an `Area3D` objective object near the left code panel. It completes `Investigate the corrupted code panels`.
 - The panel unlocks `Signal Fragment A` and a Codeverse lore entry for `The Corrupted Signal`.
+- `CodeverseMentor` instances `NPC_Base.tscn` and says `Something is corrupting the city systems.`
 
 ### NovaTone Studio Visual Groups
 
@@ -119,6 +158,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `Lighting` combines purple and blue `OmniLight3D` nodes to create a studio atmosphere.
 - `MusicConsole` is an `Area3D` objective object around the mixing desk. It completes `Check the soundwave console`.
 - The console unlocks `Signal Fragment B` and a NovaTone lore entry.
+- `NovaToneGuide` instances `NPC_Base.tscn` and says `The frequencies haven't been stable lately.`
 
 ### NovaCanvas Loft Visual Groups
 
@@ -128,6 +168,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `Lighting` combines a warm directional key light with pink and teal fill lights.
 - `GlowingCanvas` is an `Area3D` objective object around the large back canvas. It completes `Inspect the glowing canvas`.
 - The canvas unlocks `Signal Fragment C` and a NovaCanvas lore entry.
+- `NovaCanvasGuide` instances `NPC_Base.tscn` and says `The paintings are reacting to something.`
 
 ### Wonder Labs Visual Groups
 

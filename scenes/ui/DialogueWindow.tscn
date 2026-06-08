@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://ptl_dialogue_window"]
+
+[ext_resource type="Script" path="res://scripts/dialogue_window.gd" id="1_dialogue"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
+bg_color = Color(0.025, 0.035, 0.055, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.8, 1, 0.95)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="DialogueWindow" type="CanvasLayer" groups=["dialogue_ui"]]
+layer = 11
+script = ExtResource("1_dialogue")
+
+[node name="DialoguePanel" type="PanelContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -360.0
+offset_top = -230.0
+offset_right = 360.0
+offset_bottom = -40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
+
+[node name="MarginContainer" type="MarginContainer" parent="DialoguePanel"]
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 18
+
+[node name="DialogueContent" type="VBoxContainer" parent="DialoguePanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="SpeakerLabel" type="Label" parent="DialoguePanel/MarginContainer/DialogueContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "NPC"
+
+[node name="DialogueLabel" type="Label" parent="DialoguePanel/MarginContainer/DialogueContent"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+text = "Dialogue"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="CloseButton" type="Button" parent="DialoguePanel/MarginContainer/DialogueContent"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Close"

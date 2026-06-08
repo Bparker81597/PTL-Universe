@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://ptl_novatone_studio"]
+[gd_scene load_steps=14 format=3 uid="uid://ptl_novatone_studio"]
 
 [ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
 [ext_resource type="Script" path="res://systems/objectives/objective_interactable.gd" id="2_objective"]
+[ext_resource type="PackedScene" path="res://scenes/characters/NPC_Base.tscn" id="3_npc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(20, 0.2, 20)
@@ -239,3 +240,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_blue")
 
 [node name="ReturnPortal" parent="." instance=ExtResource("1_return_portal")]
 position = Vector3(0, 2, -5.2)
+
+[node name="NovaToneGuide" parent="." instance=ExtResource("3_npc")]
+position = Vector3(3.4, 0, 4.2)
+rotation = Vector3(0, -0.6, 0)
+npc_name = "NovaTone Guide"
+dialogue_text = "The frequencies haven't been stable lately."
