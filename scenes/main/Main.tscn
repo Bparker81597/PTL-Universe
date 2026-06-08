@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ptl_main_scene"]
+[gd_scene load_steps=10 format=3 uid="uid://ptl_main_scene"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/worlds/PTL_HQ.tscn" id="1_ptl_hq"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/ObjectiveUI.tscn" id="5_objective_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/InvestigationJournal.tscn" id="6_journal"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DialogueWindow.tscn" id="7_dialogue"]
+[ext_resource type="PackedScene" path="res://scenes/ui/EpisodeCompletionUI.tscn" id="8_completion"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_main")
@@ -32,3 +33,5 @@ light_energy = 1.4
 [node name="InvestigationJournal" parent="." instance=ExtResource("6_journal")]
 
 [node name="DialogueWindow" parent="." instance=ExtResource("7_dialogue")]
+
+[node name="EpisodeCompletionUI" parent="." instance=ExtResource("8_completion")]

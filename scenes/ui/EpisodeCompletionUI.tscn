@@ -1,0 +1,156 @@
+[gd_scene load_steps=4 format=3 uid="uid://ptl_episode_completion_ui"]
+
+[ext_resource type="Script" path="res://scripts/episode_completion_ui.gd" id="1_completion"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_summary"]
+bg_color = Color(0.02, 0.028, 0.045, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.82, 0.92, 0.95)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_quest"]
+bg_color = Color(0.045, 0.035, 0.075, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.65, 0.25, 0.95, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="EpisodeCompletionUI" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1_completion")
+
+[node name="MissionCompleteOverlay" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+color = Color(0.005, 0.008, 0.018, 0.96)
+
+[node name="CenterContainer" type="CenterContainer" parent="MissionCompleteOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MissionCompleteLabel" type="Label" parent="MissionCompleteOverlay/CenterContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 48
+text = "MISSION COMPLETE"
+horizontal_alignment = 1
+
+[node name="SummaryOverlay" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+color = Color(0.005, 0.008, 0.018, 0.94)
+
+[node name="CenterContainer" type="CenterContainer" parent="SummaryOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SummaryPanel" type="PanelContainer" parent="SummaryOverlay/CenterContainer"]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_summary")
+
+[node name="MarginContainer" type="MarginContainer" parent="SummaryOverlay/CenterContainer/SummaryPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 26
+
+[node name="SummaryContent" type="VBoxContainer" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="UniverseTitle" type="Label" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "PTL Universe"
+horizontal_alignment = 1
+
+[node name="EpisodeCompleteTitle" type="Label" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Episode 1 Complete"
+horizontal_alignment = 1
+
+[node name="EpisodeTitle" type="Label" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.42, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "The Corrupted Signal"
+horizontal_alignment = 1
+
+[node name="SummaryText" type="Label" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent"]
+layout_mode = 2
+text = "The investigation revealed a mysterious signal spreading through Codeverse, NovaTone, and NovaCanvas."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="GlitchLabel" type="Label" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.18, 0.28, 1)
+theme_override_font_sizes/font_size = 24
+text = "Unknown source detected:\nGL!TCH"
+horizontal_alignment = 1
+
+[node name="QuestSummary" type="PanelContainer" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_quest")
+
+[node name="QuestSummaryContent" type="HBoxContainer" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent/QuestSummary"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="CluesLabel" type="Label" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent/QuestSummary/QuestSummaryContent"]
+custom_minimum_size = Vector2(170, 90)
+layout_mode = 2
+text = "Clues Discovered"
+autowrap_mode = 3
+
+[node name="NPCsLabel" type="Label" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent/QuestSummary/QuestSummaryContent"]
+custom_minimum_size = Vector2(170, 90)
+layout_mode = 2
+text = "NPCs Spoken To"
+autowrap_mode = 3
+
+[node name="CompletionLabel" type="Label" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent/QuestSummary/QuestSummaryContent"]
+custom_minimum_size = Vector2(200, 90)
+layout_mode = 2
+text = "Investigation Completion"
+autowrap_mode = 3
+
+[node name="RewardLabel" type="Label" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 1, 0.72, 1)
+text = "Reward: Investigation Journal Entry Unlocked"
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="SummaryOverlay/CenterContainer/SummaryPanel/MarginContainer/SummaryContent"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+text = "Continue"
+
+[node name="MissionCompleteSFX" type="AudioStreamPlayer" parent="."]

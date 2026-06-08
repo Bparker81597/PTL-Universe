@@ -3,6 +3,7 @@ extends Node
 ## Tracks Episode 1 mission progress, discovered clues, and unlocked lore.
 
 signal investigation_updated
+signal episode_completed(episode_title: String)
 
 const INVESTIGATION_TITLE := "The Corrupted Signal"
 const REQUIRED_CLUE_IDS := ["signal_fragment_a"]
@@ -118,9 +119,11 @@ func complete_investigation() -> void:
 
 	completed_investigations.append(INVESTIGATION_TITLE)
 	active_investigation = ""
+	lore_entries.append("Episode 1 Complete: The Corrupted Signal investigation journal entry.")
 	ObjectiveManager.set_custom_objective(STEP_OBJECTIVES[STEP_TALK_BRITTANY_END])
 	ObjectiveManager.complete_current_objective("The signal is spreading. The investigation has begun.")
 	investigation_updated.emit()
+	episode_completed.emit(INVESTIGATION_TITLE)
 
 
 func _record_clue(clue_id: String, clue_title: String, lore_entry: String) -> void:

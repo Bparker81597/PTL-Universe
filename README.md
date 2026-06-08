@@ -10,6 +10,8 @@ The prototype also includes a simple objective UI. The first investigation drive
 
 Episode 1, **The Corrupted Signal**, starts with BrittanyVerse in PTL HQ. The mission sends the player through The Nexus to NateVerse in Codeverse City, then to the corrupted code panel for Signal Fragment A before returning to BrittanyVerse. Press `Tab` to open the Investigation Journal.
 
+Completing Episode 1 now displays a fading mission-complete banner followed by an episode summary with discovered clues, spoken NPCs, investigation status, the GL!TCH reveal, and an unlocked journal entry.
+
 Placeholder cast scenes are available for BrittanyVerse, NateVerse, BrooklynVerse, MaizeVerse, and Gl!tch. The first four are placed as interactable NPCs; Gl!tch remains hidden and non-interactable.
 
 Quaternius Sci-Fi Essentials glTF props are imported under `assets/quaternius/sci_fi_essentials/` and used as environmental storytelling props in PTL HQ, Codeverse City, and Wonder Labs. No weapon models or combat systems were added.

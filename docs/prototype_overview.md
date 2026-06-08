@@ -31,6 +31,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `NexusMenu` instances `nexus_menu.tscn`, which owns the interaction prompt and travel menu.
 - `InvestigationJournal` instances `InvestigationJournal.tscn`, which opens with Tab and summarizes clues, lore, and investigation progress.
 - `DialogueWindow` instances `DialogueWindow.tscn`, which stays available while worlds are swapped and displays NPC conversations.
+- `EpisodeCompletionUI` instances `EpisodeCompletionUI.tscn`, which presents the mission-complete sequence and Episode 1 summary.
 - `main.gd` registers `WorldContainer` and the persistent player with `SceneManager` when the game starts.
 
 ## PTL_HQ.tscn
@@ -123,6 +124,25 @@ Future character art can replace the primitive `Body` and `Head` meshes without 
 - `show_dialogue()` fills in the speaker and message, shows the panel, focuses the Close button, and pauses the 3D world.
 - `close_dialogue()` hides the panel and unpauses the world.
 - `_unhandled_input()` lets Escape close an open conversation.
+
+## EpisodeCompletionUI.tscn
+
+`EpisodeCompletionUI.tscn` is a persistent `CanvasLayer` above the other game UI.
+
+- `MissionCompleteOverlay` is a full-screen banner that fades in, pauses briefly, and fades out.
+- `SummaryOverlay` contains the Episode 1 completion screen and remains hidden until the banner finishes.
+- `SummaryPanel` shows the PTL Universe title, episode title, story summary, GL!TCH reveal, reward, and Continue button.
+- `QuestSummary` contains separate labels for discovered clues, spoken NPCs, and investigation completion.
+- `MissionCompleteSFX` is an `AudioStreamPlayer` placeholder. A completion sound can be assigned to its empty stream slot later without changing code.
+
+## episode_completion_ui.gd
+
+`episode_completion_ui.gd` controls the completion presentation.
+
+- `_ready()` listens for `InvestigationManager.episode_completed` and connects the Continue button.
+- `_show_completion_sequence()` closes the final dialogue, pauses gameplay, optionally plays the placeholder sound, and runs a pause-safe fade tween.
+- `_refresh_summary()` reads clues, NPC conversations, and completion data from `InvestigationManager`.
+- `_on_continue_pressed()` hides the summary, unpauses gameplay, and asks `SceneManager` to return the player to PTL HQ.
 
 ## nexus_menu.tscn
 
@@ -285,6 +305,7 @@ The imported kit assets live under `res://assets/quaternius/sci_fi_essentials/`.
 - `get_steps_text()` formats the Corrupted Signal chain for the Investigation Journal.
 - `on_world_loaded()` detects the required Nexus arrival in Codeverse and the later return to PTL HQ.
 - `complete_investigation()` runs after the final BrittanyVerse conversation and shows `The signal is spreading. The investigation has begun.`
+- Completing Episode 1 also unlocks an investigation journal entry and emits `episode_completed`, which starts the completion UI.
 
 ## player.gd
 

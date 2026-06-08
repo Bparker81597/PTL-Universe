@@ -15,3 +15,8 @@ Mission order:
 `SceneManager` reports world travel to `InvestigationManager`, NPC scenes report
 configured conversation events, and the corrupted panel reports the clue. The
 manager validates the active step before updating the objective UI or journal.
+
+After the final BrittanyVerse conversation, `InvestigationManager` emits
+`episode_completed`. The persistent `EpisodeCompletionUI` closes the dialogue,
+plays the mission-complete fade sequence, shows the quest summary, and returns
+the player to PTL HQ when Continue is pressed.
