@@ -25,6 +25,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `PrototypeUI` instances the UI scene with the title label.
 - `ObjectiveUI` instances `ObjectiveUI.tscn`, which shows the active objective and short interaction messages.
 - `NexusMenu` instances `nexus_menu.tscn`, which owns the interaction prompt and travel menu.
+- `InvestigationJournal` instances `InvestigationJournal.tscn`, which opens with Tab and summarizes clues, lore, and investigation progress.
 - `main.gd` registers `WorldContainer` and the persistent player with `SceneManager` when the game starts.
 
 ## PTL_HQ.tscn
@@ -103,6 +104,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `FloatingCodePanels` combines transparent `QuadMesh` panels with `Label3D` code text.
 - `HolographicSign` is a standalone glowing `Label3D` that helps the space read like a digital district.
 - `CorruptedCodePanel` is an `Area3D` objective object near the left code panel. It completes `Investigate the corrupted code panels`.
+- The panel unlocks `Signal Fragment A` and a Codeverse lore entry for `The Corrupted Signal`.
 
 ### NovaTone Studio Visual Groups
 
@@ -111,6 +113,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `SoundwavePanel` uses a dark backing panel and differently sized emissive bars to form a readable soundwave.
 - `Lighting` combines purple and blue `OmniLight3D` nodes to create a studio atmosphere.
 - `MusicConsole` is an `Area3D` objective object around the mixing desk. It completes `Check the soundwave console`.
+- The console unlocks `Signal Fragment B` and a NovaTone lore entry.
 
 ### NovaCanvas Loft Visual Groups
 
@@ -119,6 +122,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `FloatingPaintParticles` groups small emissive sphere meshes suspended around the room.
 - `Lighting` combines a warm directional key light with pink and teal fill lights.
 - `GlowingCanvas` is an `Area3D` objective object around the large back canvas. It completes `Inspect the glowing canvas`.
+- The canvas unlocks `Signal Fragment C` and a NovaCanvas lore entry.
 
 ## ReturnPortal.tscn
 
@@ -139,6 +143,29 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `MessagePanel` appears near the bottom of the screen when an objective interaction shows feedback.
 - `MessageTimer` hides the message after a few seconds.
 
+## InvestigationJournal.tscn
+
+`InvestigationJournal.tscn` is the persistent investigation screen opened with Tab.
+
+- `JournalOverlay` darkens the screen while the journal is open.
+- `JournalPanel` contains the readable journal layout.
+- `ActiveInvestigationLabel` shows the current investigation, starting with `The Corrupted Signal`.
+- The active section also shows the four investigation steps and their Pending, Active, or Complete state.
+- `CluesLabel` lists discovered signal fragments and hides undiscovered clue names.
+- `CompletedLabel` lists finished investigations.
+- `LoreLabel` lists lore entries unlocked by world interactions.
+- `CloseButton`, Tab, or Escape closes the journal.
+- The journal pauses the 3D world while open and will not open on top of another paused menu.
+
+## investigation_journal.gd
+
+`investigation_journal.gd` controls the journal UI.
+
+- `_unhandled_input()` listens for the `investigation_journal` action mapped to Tab.
+- `open_journal()` refreshes the journal, displays it, and pauses the world.
+- `close_journal()` hides the journal and unpauses the world.
+- `refresh_journal()` rebuilds the active investigation, clue, completion, and lore text from `InvestigationManager`.
+
 ## objective_manager.gd
 
 `objective_manager.gd` is an autoload, so it persists while worlds are swapped.
@@ -146,6 +173,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `WORLD_OBJECTIVES` maps each world root name to its objective text.
 - `set_world_objective()` is called by `SceneManager` after each world loads.
 - `complete_current_objective()` marks the active objective complete and broadcasts a short message to the UI.
+- `set_custom_objective()` lets the investigation system replace a world objective with `Return to PTL HQ`.
 - `objective_changed` tells `ObjectiveUI` when to redraw the objective text.
 - `message_shown` tells `ObjectiveUI` when to show an interaction message.
 
@@ -158,6 +186,21 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `completion_message` controls the message shown after pressing `E`.
 - `_unhandled_input()` listens for the shared `interact` action and completes the current objective.
 - The script reuses the existing Nexus prompt UI so there is one consistent `Press E` prompt style.
+- Optional clue fields tell `InvestigationManager` what clue and lore entry to unlock.
+- Already-discovered clue objects stop prompting, so they cannot complete unrelated later objectives.
+
+## investigation_manager.gd
+
+`investigation_manager.gd` is an autoload that stores investigation progress across world travel.
+
+- `active_investigation` starts as `The Corrupted Signal`.
+- `discovered_clues` stores the three named signal fragments.
+- `completed_investigations` stores finished investigation names.
+- `lore_entries` stores lore text unlocked by clue interactions.
+- `discover_clue()` records a clue and changes the active objective to `Return to PTL HQ` after all three fragments are collected.
+- `get_steps_text()` formats the four Corrupted Signal objectives for the Investigation Journal.
+- `on_world_loaded()` checks whether returning to PTL HQ should complete the investigation.
+- `complete_investigation()` moves `The Corrupted Signal` into completed investigations and shows `Unknown source detected: GLITCH`.
 
 ## player.gd
 
@@ -202,6 +245,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `return_to_ptl_hq()` is a convenience function used by every return portal.
 - `move_player_to_spawn()` finds the new world's `SpawnPoint`, moves the existing player there, and clears old movement velocity.
 - After a world loads, `SceneManager` tells `ObjectiveManager` which objective should be active.
+- `SceneManager` also notifies `InvestigationManager`, allowing PTL HQ return travel to complete an investigation.
 - Only the world is replaced. The player, third-person camera, title UI, and Nexus menu remain alive.
 
 ## main.gd
@@ -220,3 +264,4 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `Space` jumps.
 - `E` interacts with The Nexus while the player is nearby.
 - `Escape` closes the Nexus travel menu.
+- `Tab` opens or closes the Investigation Journal.

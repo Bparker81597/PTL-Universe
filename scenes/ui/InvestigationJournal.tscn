@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://ptl_investigation_journal"]
+
+[ext_resource type="Script" path="res://scripts/investigation_journal.gd" id="1_journal"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_journal"]
+bg_color = Color(0.025, 0.03, 0.05, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.75, 1, 0.95)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="InvestigationJournal" type="CanvasLayer"]
+layer = 12
+script = ExtResource("1_journal")
+
+[node name="JournalOverlay" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.005, 0.008, 0.018, 0.82)
+
+[node name="CenterContainer" type="CenterContainer" parent="JournalOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="JournalPanel" type="PanelContainer" parent="JournalOverlay/CenterContainer"]
+custom_minimum_size = Vector2(720, 520)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_journal")
+
+[node name="MarginContainer" type="MarginContainer" parent="JournalOverlay/CenterContainer/JournalPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="JournalContent" type="VBoxContainer" parent="JournalOverlay/CenterContainer/JournalPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="TitleLabel" type="Label" parent="JournalOverlay/CenterContainer/JournalPanel/MarginContainer/JournalContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "INVESTIGATION JOURNAL"
+horizontal_alignment = 1
+
+[node name="ActiveInvestigationLabel" type="Label" parent="JournalOverlay/CenterContainer/JournalPanel/MarginContainer/JournalContent"]
+layout_mode = 2
+text = "Active Investigation"
+autowrap_mode = 3
+
+[node name="CluesLabel" type="Label" parent="JournalOverlay/CenterContainer/JournalPanel/MarginContainer/JournalContent"]
+layout_mode = 2
+text = "Discovered Clues"
+autowrap_mode = 3
+
+[node name="CompletedLabel" type="Label" parent="JournalOverlay/CenterContainer/JournalPanel/MarginContainer/JournalContent"]
+layout_mode = 2
+text = "Completed Investigations"
+autowrap_mode = 3
+
+[node name="LoreLabel" type="Label" parent="JournalOverlay/CenterContainer/JournalPanel/MarginContainer/JournalContent"]
+layout_mode = 2
+text = "Lore Entries"
+autowrap_mode = 3
+
+[node name="CloseButton" type="Button" parent="JournalOverlay/CenterContainer/JournalPanel/MarginContainer/JournalContent"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+text = "Close"

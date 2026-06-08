@@ -25,6 +25,12 @@ func set_world_objective(world_name: String) -> void:
 	objective_changed.emit(current_objective, objective_complete)
 
 
+func set_custom_objective(objective_text: String) -> void:
+	current_objective = objective_text
+	objective_complete = false
+	objective_changed.emit(current_objective, objective_complete)
+
+
 func complete_current_objective(message_text: String) -> void:
 	if current_objective == "" or objective_complete:
 		return

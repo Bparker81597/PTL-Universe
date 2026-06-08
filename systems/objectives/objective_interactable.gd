@@ -4,6 +4,9 @@ extends Area3D
 
 @export var interaction_prompt: String = "Press E to investigate"
 @export_multiline var completion_message: String = "Objective complete."
+@export var clue_id: String = ""
+@export var clue_title: String = ""
+@export_multiline var lore_entry: String = ""
 
 var player_nearby: bool = false
 var nexus_menu: CanvasLayer
@@ -16,17 +19,19 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not player_nearby or ObjectiveManager.objective_complete:
+	if not player_nearby or ObjectiveManager.objective_complete or _is_already_discovered():
 		return
 
 	if event.is_action_pressed("interact"):
 		ObjectiveManager.complete_current_objective(completion_message)
+		if clue_id != "":
+			InvestigationManager.discover_clue(clue_id, clue_title, lore_entry)
 		_hide_prompt()
 		get_viewport().set_input_as_handled()
 
 
 func _on_body_entered(body: Node3D) -> void:
-	if not body.is_in_group("player") or ObjectiveManager.objective_complete:
+	if not body.is_in_group("player") or ObjectiveManager.objective_complete or _is_already_discovered():
 		return
 
 	player_nearby = true
@@ -45,3 +50,7 @@ func _on_body_exited(body: Node3D) -> void:
 func _hide_prompt() -> void:
 	if nexus_menu != null and nexus_menu.has_method("set_interaction_prompt"):
 		nexus_menu.set_interaction_prompt(false, interaction_prompt)
+
+
+func _is_already_discovered() -> bool:
+	return clue_id != "" and InvestigationManager.discovered_clues.has(clue_id)

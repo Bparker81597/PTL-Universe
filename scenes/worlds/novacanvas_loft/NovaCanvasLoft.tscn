@@ -183,6 +183,9 @@ position = Vector3(0, 2.5, -6.8)
 script = ExtResource("2_objective")
 interaction_prompt = "Press E to inspect the glowing canvas"
 completion_message = "The canvas shifts into a map of connected worlds across the PTL Universe."
+clue_id = "signal_fragment_c"
+clue_title = "Signal Fragment C"
+lore_entry = "The glowing canvas maps the transmission across connected PTL Universe worlds."
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GlowingCanvas"]
 shape = SubResource("BoxShape3D_canvas_interaction")

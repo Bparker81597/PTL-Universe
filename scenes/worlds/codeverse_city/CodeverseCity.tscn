@@ -226,6 +226,9 @@ position = Vector3(-5.2, 2.2, 1)
 script = ExtResource("2_objective")
 interaction_prompt = "Press E to investigate corrupted code"
 completion_message = "The panel is looping damaged access records. Someone altered the city network."
+clue_id = "signal_fragment_a"
+clue_title = "Signal Fragment A"
+lore_entry = "A corrupted Codeverse access record contains part of an unknown transmission."
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FloatingCodePanels/CorruptedCodePanel"]
 shape = SubResource("BoxShape3D_interaction")

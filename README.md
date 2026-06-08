@@ -8,6 +8,8 @@ The Nexus now travels to three small placeholder worlds: Codeverse City, NovaTon
 
 The prototype also includes a simple objective UI. Each world sets a small objective, and each destination has one `E` interaction that completes it.
 
+The first investigation, **The Corrupted Signal**, connects those world interactions into a three-clue mystery. Press `Tab` to open the Investigation Journal.
+
 ## Open The Project
 
 Open this folder in Godot 4:
@@ -31,6 +33,7 @@ res://scenes/main/Main.tscn
 - `Space` jumps.
 - `E` interacts with The Nexus when nearby.
 - `Escape` closes the Nexus travel menu.
+- `Tab` opens or closes the Investigation Journal.
 
 ## Learning Notes
 
