@@ -234,7 +234,6 @@ npc_name = "NovaCanvas Guide"
 dialogue_text = "The canvas keeps reacting to invisible energy."
 after_clue_dialogue_text = "This energy feels alive."
 dialogue_clue_id = "signal_fragment_c"
-investigation_step_id = "talk_novacanvas_guide"
 
 [node name="BrooklynVerse" parent="." instance=ExtResource("4_brooklyn")]
 position = Vector3(4.4, 0, 3.8)

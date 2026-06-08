@@ -15,7 +15,10 @@ emission_energy_multiplier = 0.8
 
 [node name="BrittanyVerse" instance=ExtResource("1_base")]
 npc_name = "BrittanyVerse"
-dialogue_text = "The Nexus connects more than worlds. It connects ideas."
+dialogue_text = "A corrupted signal reached PTL HQ. Use The Nexus and find its source in Codeverse."
+after_clue_dialogue_text = "The signal is spreading. The investigation has begun."
+dialogue_clue_id = "signal_fragment_a"
+investigation_step_id = "talk_brittanyverse"
 
 [node name="Body" parent="." index="0"]
 surface_material_override/0 = SubResource("Material_purple")

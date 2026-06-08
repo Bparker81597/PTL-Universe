@@ -14,7 +14,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `res://systems/portals/`, `res://systems/dialogue/`, and `res://systems/quests/` are placeholders for future gameplay systems.
 - `res://characters/` contains future character folders for Brittanyverse, Nateverse, Brooklynverse, Maizeverse, and GL!TCH.
 - `res://worlds/` contains future content folders for PTL HQ, Codeverse, NovaTone, NovaCanvas, and DreamFrame.
-- `res://quests/` contains future quest folders for `episode_01` and `episode_02`.
+- `res://quests/episode_01/` documents the implemented Corrupted Signal mission flow, while `episode_02` is reserved for future work.
 - `res://docs/` contains project notes and learning references.
 
 ## Main.tscn
@@ -53,7 +53,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `InteractionArea/CollisionShape3D` uses a large sphere to define how close the player must be before the prompt appears.
 - Pressing `E` at `InteractionArea` completes the PTL HQ objective, opens the Nexus menu, and lets the player choose a destination.
 - `QuaterniusOfficeProps` instances imported `Prop_Desk_L`, `Prop_Chair`, `Prop_Locker`, `Prop_Shelves_WideTall`, and `Prop_Shelves_ThinTall` models.
-- `BrittanyVerse` is an interactable placeholder cast member near the lobby operations area.
+- `BrittanyVerse` is an interactable placeholder cast member near the lobby operations area. Her first conversation starts Episode 1, and her second conversation after Signal Fragment A completes it.
 
 ## Player.tscn
 
@@ -99,8 +99,8 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 
 Each main cast scene instances `NPC_Base.tscn`, so it automatically has a floating name, proximity prompt, and dialogue support.
 
-- `characters/brittanyverse/BrittanyVerse.tscn` uses a purple capsule body and teal glowing head. BrittanyVerse is placed in PTL HQ.
-- `characters/nateverse/NateVerse.tscn` uses a blue capsule body and cyan glowing head. NateVerse is placed in Codeverse City.
+- `characters/brittanyverse/BrittanyVerse.tscn` uses a purple capsule body and teal glowing head. BrittanyVerse is placed in PTL HQ and reports the `talk_brittanyverse` mission event.
+- `characters/nateverse/NateVerse.tscn` uses a blue capsule body and cyan glowing head. NateVerse is placed in Codeverse City and reports the `talk_nateverse` mission event.
 - `characters/brooklynverse/BrooklynVerse.tscn` uses a pink capsule body and lavender glowing head. BrooklynVerse is placed in NovaCanvas Loft.
 - `characters/maizeverse/MaizeVerse.tscn` uses a blue-green capsule body and white glowing head. MaizeVerse is placed in Wonder Labs.
 - `characters/glitch/Glitch.tscn` uses a black capsule body and red glowing head. Gl!tch is hidden, has processing disabled, and has its interaction area disabled until a later reveal.
@@ -163,8 +163,8 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `HolographicSign` is a standalone glowing `Label3D` that helps the space read like a digital district.
 - `QuaterniusTechProps` instances `Prop_Crate`, `Prop_Crate_Large`, `Prop_Crate_Tarp`, `Prop_SatelliteDish`, `Prop_Barrel1`, and `Enemy_EyeDrone`.
 - `StaticEyeDroneScanner` uses the EyeDrone model only as a non-moving scanner prop.
-- `CorruptedCodePanel` is an `Area3D` clue object near the left code panel. It unlocks `Signal Fragment A`.
-- `CodeverseMentor` says `Something is corrupting the city systems.` before clue A and `This signal is spreading beyond Codeverse.` after clue A. The after-clue conversation unlocks `Signal Fragment B`.
+- `CorruptedCodePanel` is an `Area3D` clue object near the left code panel. It only unlocks `Signal Fragment A` after NateVerse has been consulted.
+- `CodeverseMentor` remains an ambient NPC and changes dialogue after clue A without advancing Episode 1.
 - `NateVerse` is an additional interactable cast member placed away from the investigation mentor.
 
 ### NovaTone Studio Visual Groups
@@ -174,7 +174,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `SoundwavePanel` uses a dark backing panel and differently sized emissive bars to form a readable soundwave.
 - `Lighting` combines purple and blue `OmniLight3D` nodes to create a studio atmosphere.
 - `MusicConsole` remains a simple placeholder interactable around the mixing desk.
-- `NovaToneGuide` says `The frequencies feel unstable.` before clue B and `This distortion sounds like corrupted code.` after clue B. The after-clue conversation unlocks `Signal Fragment C`.
+- `NovaToneGuide` remains an ambient NPC for future missions.
 
 ### NovaCanvas Loft Visual Groups
 
@@ -183,7 +183,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `FloatingPaintParticles` groups small emissive sphere meshes suspended around the room.
 - `Lighting` combines a warm directional key light with pink and teal fill lights.
 - `GlowingCanvas` remains a simple placeholder interactable around the large back canvas.
-- `NovaCanvasGuide` says `The canvas keeps reacting to invisible energy.` before clue C and `This energy feels alive.` after clue C. The after-clue conversation sets the objective to `Return to PTL HQ`.
+- `NovaCanvasGuide` remains an ambient NPC for future missions.
 - `BrooklynVerse` is an additional interactable cast member in the open studio area.
 
 ### Wonder Labs Visual Groups
@@ -275,16 +275,16 @@ The imported kit assets live under `res://assets/quaternius/sci_fi_essentials/`.
 `investigation_manager.gd` is an autoload that stores investigation progress across world travel.
 
 - `active_investigation` starts as `The Corrupted Signal`.
-- `current_step` tracks the sequential clue, conversation, and return-to-HQ objectives.
-- `discovered_clues` stores the three named signal fragments.
+- `current_step` tracks the sequential Episode 1 conversation, travel, clue, and return objectives.
+- `discovered_clues` stores Signal Fragment A.
 - `talked_to_npcs` stores required conversations.
 - `completed_investigations` stores finished investigation names.
 - `lore_entries` stores lore text unlocked by clue interactions.
-- `discover_clue()` records clue A from the Codeverse panel and updates the objective.
-- `complete_npc_step()` lets dialogue unlock clues B and C, then sets `Return to PTL HQ` after all three required conversations.
+- `discover_clue()` records Signal Fragment A from the Codeverse panel and updates the objective to `Return to PTL HQ`.
+- `complete_npc_step()` validates BrittanyVerse and NateVerse conversation events against the active mission step.
 - `get_steps_text()` formats the Corrupted Signal chain for the Investigation Journal.
-- `on_world_loaded()` keeps the chain objective active across travel and completes the investigation on the final return to PTL HQ.
-- `complete_investigation()` moves `The Corrupted Signal` into completed investigations and shows `Unknown source detected: GL!TCH`.
+- `on_world_loaded()` detects the required Nexus arrival in Codeverse and the later return to PTL HQ.
+- `complete_investigation()` runs after the final BrittanyVerse conversation and shows `The signal is spreading. The investigation has begun.`
 
 ## player.gd
 

@@ -1,32 +1,35 @@
 extends Node
 
-## Stores investigation progress, discovered clues, and unlocked lore.
+## Tracks Episode 1 mission progress, discovered clues, and unlocked lore.
 
 signal investigation_updated
 
 const INVESTIGATION_TITLE := "The Corrupted Signal"
-const REQUIRED_CLUE_IDS := ["signal_fragment_a", "signal_fragment_b", "signal_fragment_c"]
-const STEP_INVESTIGATE_A := "investigate_clue_a"
-const STEP_TALK_CODEVERSE := "talk_codeverse_mentor"
-const STEP_TALK_NOVATONE := "talk_novatone_guide"
-const STEP_TALK_NOVACANVAS := "talk_novacanvas_guide"
+const REQUIRED_CLUE_IDS := ["signal_fragment_a"]
+const STEP_TALK_BRITTANY_START := "talk_brittany_start"
+const STEP_USE_NEXUS := "use_nexus_to_codeverse"
+const STEP_TALK_NATE := "talk_nateverse"
+const STEP_INVESTIGATE_PANEL := "investigate_corrupted_panel"
 const STEP_RETURN_TO_HQ := "return_to_ptl_hq"
+const STEP_TALK_BRITTANY_END := "talk_brittany_end"
+const NPC_EVENT_BRITTANY := "talk_brittanyverse"
+const NPC_EVENT_NATE := "talk_nateverse"
 
 const STEP_OBJECTIVES := {
-	STEP_INVESTIGATE_A: "Investigate clue A",
-	STEP_TALK_CODEVERSE: "Talk to Codeverse Mentor",
-	STEP_TALK_NOVATONE: "Talk to NovaTone Guide",
-	STEP_TALK_NOVACANVAS: "Talk to NovaCanvas Guide",
+	STEP_TALK_BRITTANY_START: "Talk to BrittanyVerse",
+	STEP_USE_NEXUS: "Use The Nexus to travel to Codeverse City.",
+	STEP_TALK_NATE: "Talk to NateVerse",
+	STEP_INVESTIGATE_PANEL: "Investigate the corrupted code panel.",
 	STEP_RETURN_TO_HQ: "Return to PTL HQ",
+	STEP_TALK_BRITTANY_END: "Talk to BrittanyVerse",
 }
 
 var active_investigation: String = INVESTIGATION_TITLE
-var current_step: String = STEP_INVESTIGATE_A
+var current_step: String = STEP_TALK_BRITTANY_START
 var discovered_clues: Dictionary = {}
 var talked_to_npcs: Dictionary = {}
 var completed_investigations: Array[String] = []
 var lore_entries: Array[String] = []
-var glitch_discovered: bool = false
 
 
 func discover_clue(clue_id: String, clue_title: String, lore_entry: String) -> void:
@@ -34,56 +37,53 @@ func discover_clue(clue_id: String, clue_title: String, lore_entry: String) -> v
 		return
 
 	_record_clue(clue_id, clue_title, lore_entry)
-	current_step = STEP_TALK_CODEVERSE
+	current_step = STEP_RETURN_TO_HQ
 	_set_chain_objective()
-	ObjectiveManager.message_shown.emit("Signal Fragment A recovered. Talk to the Codeverse Mentor.")
+	ObjectiveManager.message_shown.emit("Signal Fragment A recovered. Return to PTL HQ.")
 
 
 func can_discover_clue(clue_id: String) -> bool:
 	return (
 		active_investigation == INVESTIGATION_TITLE
-		and current_step == STEP_INVESTIGATE_A
+		and current_step == STEP_INVESTIGATE_PANEL
 		and clue_id == "signal_fragment_a"
 		and not discovered_clues.has(clue_id)
 	)
 
 
-func complete_npc_step(step_id: String) -> void:
-	if active_investigation != INVESTIGATION_TITLE or step_id != current_step:
+func complete_npc_step(npc_event_id: String) -> void:
+	if active_investigation != INVESTIGATION_TITLE:
 		return
 
-	talked_to_npcs[step_id] = true
-	match step_id:
-		STEP_TALK_CODEVERSE:
-			_record_clue(
-				"signal_fragment_b",
-				"Signal Fragment B",
-				"The Codeverse Mentor recognizes a pattern hidden inside the corrupted access record."
-			)
-			current_step = STEP_TALK_NOVATONE
+	match current_step:
+		STEP_TALK_BRITTANY_START:
+			if npc_event_id != NPC_EVENT_BRITTANY:
+				return
+			talked_to_npcs[STEP_TALK_BRITTANY_START] = true
+			current_step = STEP_USE_NEXUS
 			_set_chain_objective()
-			ObjectiveManager.message_shown.emit("Signal Fragment B unlocked. Talk to the NovaTone Guide.")
-		STEP_TALK_NOVATONE:
-			_record_clue(
-				"signal_fragment_c",
-				"Signal Fragment C",
-				"The unstable NovaTone frequencies identify the source behind the signal."
-			)
-			current_step = STEP_TALK_NOVACANVAS
+		STEP_TALK_NATE:
+			if npc_event_id != NPC_EVENT_NATE:
+				return
+			talked_to_npcs[STEP_TALK_NATE] = true
+			current_step = STEP_INVESTIGATE_PANEL
 			_set_chain_objective()
-			ObjectiveManager.message_shown.emit("Signal Fragment C unlocked. Talk to the NovaCanvas Guide.")
-		STEP_TALK_NOVACANVAS:
-			current_step = STEP_RETURN_TO_HQ
-			_set_chain_objective()
-			ObjectiveManager.message_shown.emit("All clues connected. Return to PTL HQ.")
+		STEP_TALK_BRITTANY_END:
+			if npc_event_id != NPC_EVENT_BRITTANY:
+				return
+			talked_to_npcs[STEP_TALK_BRITTANY_END] = true
+			complete_investigation()
 
 
 func on_world_loaded(world_name: String) -> void:
-	if active_investigation == INVESTIGATION_TITLE:
-		if current_step == STEP_RETURN_TO_HQ and world_name == "PTL_HQ":
-			complete_investigation()
-		else:
-			_set_chain_objective()
+	if active_investigation != INVESTIGATION_TITLE:
+		return
+
+	if current_step == STEP_USE_NEXUS and world_name == "CodeverseCity":
+		current_step = STEP_TALK_NATE
+	elif current_step == STEP_RETURN_TO_HQ and world_name == "PTL_HQ":
+		current_step = STEP_TALK_BRITTANY_END
+	_set_chain_objective()
 
 
 func has_all_required_clues() -> bool:
@@ -95,11 +95,12 @@ func has_all_required_clues() -> bool:
 
 func get_steps_text() -> String:
 	var steps := [
-		[STEP_INVESTIGATE_A, "Investigate clue A", discovered_clues.has("signal_fragment_a")],
-		[STEP_TALK_CODEVERSE, "Talk to Codeverse Mentor and unlock clue B", discovered_clues.has("signal_fragment_b")],
-		[STEP_TALK_NOVATONE, "Talk to NovaTone Guide and unlock clue C", discovered_clues.has("signal_fragment_c")],
-		[STEP_TALK_NOVACANVAS, "Talk to NovaCanvas Guide", talked_to_npcs.has(STEP_TALK_NOVACANVAS)],
-		[STEP_RETURN_TO_HQ, "Return to PTL HQ and discover GL!TCH", glitch_discovered],
+		[STEP_TALK_BRITTANY_START, "Talk to BrittanyVerse", talked_to_npcs.has(STEP_TALK_BRITTANY_START)],
+		[STEP_USE_NEXUS, "Use The Nexus to travel to Codeverse City", _has_reached_codeverse()],
+		[STEP_TALK_NATE, "Talk to NateVerse", talked_to_npcs.has(STEP_TALK_NATE)],
+		[STEP_INVESTIGATE_PANEL, "Investigate the corrupted code panel", discovered_clues.has("signal_fragment_a")],
+		[STEP_RETURN_TO_HQ, "Return to PTL HQ", _has_returned_to_hq()],
+		[STEP_TALK_BRITTANY_END, "Talk to BrittanyVerse again", completed_investigations.has(INVESTIGATION_TITLE)],
 	]
 
 	var lines: Array[String] = []
@@ -115,11 +116,10 @@ func complete_investigation() -> void:
 	if completed_investigations.has(INVESTIGATION_TITLE):
 		return
 
-	glitch_discovered = true
 	completed_investigations.append(INVESTIGATION_TITLE)
 	active_investigation = ""
-	ObjectiveManager.set_custom_objective(STEP_OBJECTIVES[STEP_RETURN_TO_HQ])
-	ObjectiveManager.complete_current_objective("Unknown source detected: GL!TCH")
+	ObjectiveManager.set_custom_objective(STEP_OBJECTIVES[STEP_TALK_BRITTANY_END])
+	ObjectiveManager.complete_current_objective("The signal is spreading. The investigation has begun.")
 	investigation_updated.emit()
 
 
@@ -135,3 +135,11 @@ func _record_clue(clue_id: String, clue_title: String, lore_entry: String) -> vo
 
 func _set_chain_objective() -> void:
 	ObjectiveManager.set_custom_objective(STEP_OBJECTIVES[current_step])
+
+
+func _has_reached_codeverse() -> bool:
+	return current_step not in [STEP_TALK_BRITTANY_START, STEP_USE_NEXUS]
+
+
+func _has_returned_to_hq() -> bool:
+	return current_step == STEP_TALK_BRITTANY_END or completed_investigations.has(INVESTIGATION_TITLE)

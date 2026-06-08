@@ -15,7 +15,8 @@ emission_energy_multiplier = 0.9
 
 [node name="NateVerse" instance=ExtResource("1_base")]
 npc_name = "NateVerse"
-dialogue_text = "I am tracing the corrupted routes through Codeverse."
+dialogue_text = "The corrupted code panel started broadcasting the signal. Investigate it."
+investigation_step_id = "talk_nateverse"
 
 [node name="Body" parent="." index="0"]
 surface_material_override/0 = SubResource("Material_blue")

@@ -8,7 +8,7 @@ The Nexus now travels to four small placeholder worlds: Codeverse City, NovaTone
 
 The prototype also includes a simple objective UI. The first investigation drives the active objective while its mystery is in progress.
 
-The first investigation, **The Corrupted Signal**, follows this chain: investigate clue A, talk to Codeverse Mentor, talk to NovaTone Guide, talk to NovaCanvas Guide, then return to PTL HQ to reveal **GL!TCH**. Press `Tab` to open the Investigation Journal.
+Episode 1, **The Corrupted Signal**, starts with BrittanyVerse in PTL HQ. The mission sends the player through The Nexus to NateVerse in Codeverse City, then to the corrupted code panel for Signal Fragment A before returning to BrittanyVerse. Press `Tab` to open the Investigation Journal.
 
 Placeholder cast scenes are available for BrittanyVerse, NateVerse, BrooklynVerse, MaizeVerse, and Gl!tch. The first four are placed as interactable NPCs; Gl!tch remains hidden and non-interactable.
 
