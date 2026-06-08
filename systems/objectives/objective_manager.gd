@@ -11,6 +11,7 @@ const WORLD_OBJECTIVES := {
 	"CodeverseCity": "Investigate the corrupted code panels",
 	"NovaToneStudio": "Check the soundwave console",
 	"NovaCanvasLoft": "Inspect the glowing canvas",
+	"WonderLabs": "Explore the lab equipment",
 }
 
 var current_world_name: String = ""

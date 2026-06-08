@@ -4,11 +4,13 @@ PTL Universe is a small Godot 4 third-person exploration prototype for the Parke
 
 This first version intentionally stays small. It includes a basic PTL HQ lobby, a placeholder player, simple third-person camera setup, WASD movement, jump, basic lighting, a placeholder portal called **The Nexus**, and a starter UI label.
 
-The Nexus now travels to three small placeholder worlds: Codeverse City, NovaTone Studio, and NovaCanvas Loft. Each destination includes a walk-in portal back to PTL HQ.
+The Nexus now travels to four small placeholder worlds: Codeverse City, NovaTone Studio, NovaCanvas Loft, and Wonder Labs. Each destination includes a walk-in portal back to PTL HQ.
 
 The prototype also includes a simple objective UI. Each world sets a small objective, and each destination has one `E` interaction that completes it.
 
 The first investigation, **The Corrupted Signal**, connects those world interactions into a three-clue mystery. Press `Tab` to open the Investigation Journal.
+
+Quaternius Sci-Fi Essentials glTF props are imported under `assets/quaternius/sci_fi_essentials/` and used as environmental storytelling props in PTL HQ, Codeverse City, and Wonder Labs. No weapon models or combat systems were added.
 
 ## Open The Project
 

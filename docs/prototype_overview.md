@@ -10,6 +10,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `res://scenes/ui/` contains UI scenes, starting with the prototype title label.
 - `res://scripts/` contains reusable GDScript files.
 - `res://assets/models/`, `res://assets/textures/`, `res://assets/audio/`, and `res://assets/animations/` are ready for future art and audio.
+- `res://assets/quaternius/sci_fi_essentials/` contains selected Quaternius Sci-Fi Essentials glTF props for placeholder environmental storytelling.
 - `res://systems/portals/`, `res://systems/dialogue/`, and `res://systems/quests/` are placeholders for future gameplay systems.
 - `res://docs/` contains project notes and learning references.
 
@@ -47,6 +48,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `InteractionArea` is an `Area3D` under `TheNexus`. It detects the player without physically blocking movement.
 - `InteractionArea/CollisionShape3D` uses a large sphere to define how close the player must be before the prompt appears.
 - Pressing `E` at `InteractionArea` completes the PTL HQ objective, opens the Nexus menu, and lets the player choose a destination.
+- `QuaterniusOfficeProps` instances imported `Prop_Desk_L`, `Prop_Chair`, `Prop_Locker`, `Prop_Shelves_WideTall`, and `Prop_Shelves_ThinTall` models.
 
 ## Player.tscn
 
@@ -79,7 +81,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `CenterContainer` keeps the menu centered at different window sizes.
 - `MenuPanel` visually frames the travel options.
 - `MenuContent` is a `VBoxContainer` that stacks the title, instructions, and buttons.
-- `CodeverseButton`, `NovaToneButton`, and `NovaCanvasButton` are placeholder destination choices.
+- `CodeverseButton`, `NovaToneButton`, `NovaCanvasButton`, and `WonderLabsButton` are placeholder destination choices.
 - `CancelButton` closes the menu without selecting a destination.
 
 ## Placeholder World Scenes
@@ -89,6 +91,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `CodeverseCity.tscn` uses a dark metallic floor, cyan/blue grid strips, digital skyline blocks, floating hologram quads, code labels, and a holographic district sign.
 - `NovaToneStudio.tscn` uses purple/blue lighting, a primitive mixing desk with glowing faders, speaker cabinets with cylinder woofers, and a large soundwave panel built from box bars.
 - `NovaCanvasLoft.tscn` uses warm pink/purple/teal lighting, primitive wood easels, glowing canvases, a large painted back canvas, and suspended sphere meshes as placeholder floating paint particles.
+- `WonderLabs.tscn` uses Quaternius sci-fi props and a primitive scanner platform to block out a future lab destination.
 - Each world root is a `Node3D` loaded into `Main/WorldContainer`.
 - Each `SpawnPoint` is a `Marker3D` that tells `SceneManager` where to place the persistent player.
 - Each `Floor` is a `StaticBody3D` with a collision shape and visible primitive mesh.
@@ -103,6 +106,8 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `DigitalSkyline` groups simple box towers and bright facade accents.
 - `FloatingCodePanels` combines transparent `QuadMesh` panels with `Label3D` code text.
 - `HolographicSign` is a standalone glowing `Label3D` that helps the space read like a digital district.
+- `QuaterniusTechProps` instances `Prop_Crate`, `Prop_Crate_Large`, `Prop_Crate_Tarp`, `Prop_SatelliteDish`, `Prop_Barrel1`, and `Enemy_EyeDrone`.
+- `StaticEyeDroneScanner` uses the EyeDrone model only as a non-moving scanner prop.
 - `CorruptedCodePanel` is an `Area3D` objective object near the left code panel. It completes `Investigate the corrupted code panels`.
 - The panel unlocks `Signal Fragment A` and a Codeverse lore entry for `The Corrupted Signal`.
 
@@ -123,6 +128,24 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `Lighting` combines a warm directional key light with pink and teal fill lights.
 - `GlowingCanvas` is an `Area3D` objective object around the large back canvas. It completes `Inspect the glowing canvas`.
 - The canvas unlocks `Signal Fragment C` and a NovaCanvas lore entry.
+
+### Wonder Labs Visual Groups
+
+- `ScannerPlatform` is a primitive glowing platform that frames the lab props.
+- `QuaterniusLabProps` instances `Prop_Desk_Medium`, `Prop_Chair`, `Prop_Shelves_WideTall`, `Prop_Shelves_WideShort`, `Prop_KeyCard`, `Prop_Chest`, `Prop_HealthPack_Tube`, and `Prop_Syringe`.
+- `AccessKeycard`, `ScannerHealthTube`, and `ScannerSyringe` are visual storytelling props only.
+- `ReturnPortal` keeps the same portal-back-to-PTL-HQ behavior as the other placeholder worlds.
+
+## Quaternius Sci-Fi Essentials Assets
+
+The imported kit assets live under `res://assets/quaternius/sci_fi_essentials/`.
+
+- The original `License_Standard.txt` is included as `LICENSE.txt`.
+- The project uses glTF models first, with their `.bin` files and required texture atlases kept beside them.
+- Imported office props: `Prop_Desk_L`, `Prop_Desk_Medium`, `Prop_Desk_Small`, `Prop_Chair`, `Prop_Locker`, `Prop_Shelves_WideTall`, `Prop_Shelves_WideShort`, and `Prop_Shelves_ThinTall`.
+- Imported tech props: `Prop_Crate`, `Prop_Crate_Large`, `Prop_Crate_Tarp`, `Prop_SatelliteDish`, `Prop_Barrel1`, and `Enemy_EyeDrone`.
+- Imported lab props: `Prop_KeyCard`, `Prop_Chest`, `Prop_HealthPack_Tube`, and `Prop_Syringe`.
+- No gun models are imported or used.
 
 ## ReturnPortal.tscn
 
@@ -228,7 +251,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 
 `nexus_menu.gd` controls both the prompt and travel menu.
 
-- The three scene-path constants point to the real placeholder world scenes.
+- The scene-path constants point to the real placeholder world scenes, including Wonder Labs.
 - `_ready()` connects each destination button to its scene path and hides the prompt/menu at startup.
 - `set_interaction_prompt()` remembers whether the player is nearby and shows or hides the prompt.
 - `open_menu()` hides the prompt, opens the travel menu, focuses the first option, and pauses the 3D world.

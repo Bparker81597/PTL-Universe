@@ -5,6 +5,7 @@ extends CanvasLayer
 const CODEVERSE_CITY_PATH := "res://scenes/worlds/codeverse_city/CodeverseCity.tscn"
 const NOVATONE_STUDIO_PATH := "res://scenes/worlds/novatone_studio/NovaToneStudio.tscn"
 const NOVACANVAS_LOFT_PATH := "res://scenes/worlds/novacanvas_loft/NovaCanvasLoft.tscn"
+const WONDER_LABS_PATH := "res://scenes/worlds/wonder_labs/WonderLabs.tscn"
 
 @onready var prompt_panel: PanelContainer = $PromptPanel
 @onready var prompt_label: Label = $PromptPanel/MarginContainer/PromptLabel
@@ -12,6 +13,7 @@ const NOVACANVAS_LOFT_PATH := "res://scenes/worlds/novacanvas_loft/NovaCanvasLof
 @onready var codeverse_button: Button = $MenuOverlay/CenterContainer/MenuPanel/MarginContainer/MenuContent/CodeverseButton
 @onready var novatone_button: Button = $MenuOverlay/CenterContainer/MenuPanel/MarginContainer/MenuContent/NovaToneButton
 @onready var novacanvas_button: Button = $MenuOverlay/CenterContainer/MenuPanel/MarginContainer/MenuContent/NovaCanvasButton
+@onready var wonder_labs_button: Button = $MenuOverlay/CenterContainer/MenuPanel/MarginContainer/MenuContent/WonderLabsButton
 @onready var cancel_button: Button = $MenuOverlay/CenterContainer/MenuPanel/MarginContainer/MenuContent/CancelButton
 
 var player_is_nearby: bool = false
@@ -21,6 +23,7 @@ func _ready() -> void:
 	codeverse_button.pressed.connect(_on_destination_selected.bind(CODEVERSE_CITY_PATH))
 	novatone_button.pressed.connect(_on_destination_selected.bind(NOVATONE_STUDIO_PATH))
 	novacanvas_button.pressed.connect(_on_destination_selected.bind(NOVACANVAS_LOFT_PATH))
+	wonder_labs_button.pressed.connect(_on_destination_selected.bind(WONDER_LABS_PATH))
 	cancel_button.pressed.connect(close_menu)
 
 	prompt_panel.hide()

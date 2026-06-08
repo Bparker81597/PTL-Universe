@@ -1,7 +1,13 @@
-[gd_scene load_steps=13 format=3 uid="uid://ptl_codeverse_city"]
+[gd_scene load_steps=20 format=3 uid="uid://ptl_codeverse_city"]
 
 [ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
 [ext_resource type="Script" path="res://systems/objectives/objective_interactable.gd" id="2_objective"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Crate.gltf" id="3_crate"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Crate_Large.gltf" id="4_crate_large"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Crate_Tarp.gltf" id="5_crate_tarp"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_SatelliteDish.gltf" id="6_satellite"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Barrel1.gltf" id="7_barrel"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Enemy_EyeDrone.gltf" id="8_eye_drone"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(22, 0.2, 22)
@@ -253,3 +259,28 @@ horizontal_alignment = 1
 
 [node name="ReturnPortal" parent="." instance=ExtResource("1_return_portal")]
 position = Vector3(0, 2, -6.5)
+
+[node name="QuaterniusTechProps" type="Node3D" parent="."]
+
+[node name="CrateStackLarge" parent="QuaterniusTechProps" instance=ExtResource("4_crate_large")]
+position = Vector3(-8, 0, 4.8)
+rotation = Vector3(0, 0.35, 0)
+
+[node name="CrateStackSmall" parent="QuaterniusTechProps" instance=ExtResource("3_crate")]
+position = Vector3(-6.5, 0, 5.2)
+rotation = Vector3(0, -0.25, 0)
+
+[node name="CoveredTechCrate" parent="QuaterniusTechProps" instance=ExtResource("5_crate_tarp")]
+position = Vector3(7.5, 0, 5)
+rotation = Vector3(0, -0.45, 0)
+
+[node name="SignalBarrel" parent="QuaterniusTechProps" instance=ExtResource("7_barrel")]
+position = Vector3(6, 0, 4.7)
+
+[node name="UplinkDish" parent="QuaterniusTechProps" instance=ExtResource("6_satellite")]
+position = Vector3(7.5, 0, -1.8)
+rotation = Vector3(0, -0.65, 0)
+
+[node name="StaticEyeDroneScanner" parent="QuaterniusTechProps" instance=ExtResource("8_eye_drone")]
+position = Vector3(-1.8, 2.8, -1.2)
+rotation = Vector3(0, 0.65, 0)

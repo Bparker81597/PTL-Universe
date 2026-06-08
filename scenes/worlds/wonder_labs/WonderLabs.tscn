@@ -1,0 +1,121 @@
+[gd_scene load_steps=15 format=3 uid="uid://ptl_wonder_labs"]
+
+[ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Desk_Medium.gltf" id="2_desk"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Chair.gltf" id="3_chair"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Shelves_WideTall.gltf" id="4_shelf_wide"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Shelves_WideShort.gltf" id="5_shelf_short"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_KeyCard.gltf" id="6_keycard"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Chest.gltf" id="7_chest"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_HealthPack_Tube.gltf" id="8_health_tube"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/sci_fi_essentials/gltf/Prop_Syringe.gltf" id="9_syringe"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(20, 0.2, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(20, 0.2, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_unit"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.055, 0.075, 0.085, 1)
+metallic = 0.3
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_scanner"]
+albedo_color = Color(0.1, 0.85, 0.75, 1)
+emission_enabled = true
+emission = Color(0.03, 0.55, 0.5, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="Environment" id="Environment_labs"]
+background_mode = 1
+background_color = Color(0.012, 0.025, 0.03, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.2, 0.55, 0.55, 1)
+ambient_light_energy = 0.7
+glow_enabled = true
+
+[node name="WonderLabs" type="Node3D"]
+
+[node name="SpawnPoint" type="Marker3D" parent="."]
+position = Vector3(0, 1, 7)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_labs")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("StandardMaterial3D_floor")
+
+[node name="LabLight" type="OmniLight3D" parent="."]
+position = Vector3(0, 5, 0)
+light_color = Color(0.25, 1, 0.85, 1)
+light_energy = 3.5
+omni_range = 15.0
+
+[node name="WorldName" type="Label3D" parent="."]
+position = Vector3(0, 4.2, -8.5)
+pixel_size = 0.012
+modulate = Color(0.5, 1, 0.88, 1)
+text = "WONDER LABS"
+font_size = 72
+outline_size = 8
+horizontal_alignment = 1
+
+[node name="ScannerPlatform" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.4, -1.5)
+scale = Vector3(4, 0.8, 3)
+mesh = SubResource("BoxMesh_unit")
+surface_material_override/0 = SubResource("StandardMaterial3D_scanner")
+
+[node name="QuaterniusLabProps" type="Node3D" parent="."]
+
+[node name="ResearchDeskLeft" parent="QuaterniusLabProps" instance=ExtResource("2_desk")]
+position = Vector3(-5.5, 0, 2.5)
+rotation = Vector3(0, 0.4, 0)
+
+[node name="ResearchChairLeft" parent="QuaterniusLabProps" instance=ExtResource("3_chair")]
+position = Vector3(-4.8, 0, 4)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="ResearchDeskRight" parent="QuaterniusLabProps" instance=ExtResource("2_desk")]
+position = Vector3(5.5, 0, 2.5)
+rotation = Vector3(0, -0.4, 0)
+
+[node name="ResearchChairRight" parent="QuaterniusLabProps" instance=ExtResource("3_chair")]
+position = Vector3(4.8, 0, 4)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="LabShelfTall" parent="QuaterniusLabProps" instance=ExtResource("4_shelf_wide")]
+position = Vector3(-8.5, 0, -4.8)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="LabShelfShort" parent="QuaterniusLabProps" instance=ExtResource("5_shelf_short")]
+position = Vector3(8.5, 0, -4.8)
+rotation = Vector3(0, -1.5708, 0)
+
+[node name="SpecimenChest" parent="QuaterniusLabProps" instance=ExtResource("7_chest")]
+position = Vector3(6.5, 0, -1.2)
+
+[node name="ScannerHealthTube" parent="QuaterniusLabProps" instance=ExtResource("8_health_tube")]
+position = Vector3(-1, 1, -1.2)
+rotation = Vector3(0, 0, 1.5708)
+
+[node name="ScannerSyringe" parent="QuaterniusLabProps" instance=ExtResource("9_syringe")]
+position = Vector3(1, 1, -1.2)
+rotation = Vector3(0, 0, -1.5708)
+
+[node name="AccessKeycard" parent="QuaterniusLabProps" instance=ExtResource("6_keycard")]
+position = Vector3(0, 1, -0.7)
+rotation = Vector3(0, 0.4, 0)
+scale = Vector3(2, 2, 2)
+
+[node name="ReturnPortal" parent="." instance=ExtResource("1_return_portal")]
+position = Vector3(0, 2, -6)
