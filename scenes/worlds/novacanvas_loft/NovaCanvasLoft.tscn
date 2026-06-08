@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://ptl_novacanvas_loft"]
+[gd_scene load_steps=15 format=3 uid="uid://ptl_novacanvas_loft"]
 
 [ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
+[ext_resource type="Script" path="res://systems/objectives/objective_interactable.gd" id="2_objective"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(20, 0.2, 20)
@@ -19,6 +20,9 @@ sides = 24
 [sub_resource type="SphereMesh" id="SphereMesh_particle"]
 radius = 0.12
 height = 0.24
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_canvas_interaction"]
+size = Vector3(8.5, 5, 3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.12, 0.105, 0.145, 1)
@@ -174,6 +178,15 @@ scale = Vector3(0.45, 2.2, 0.12)
 mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_teal")
 
+[node name="GlowingCanvas" type="Area3D" parent="."]
+position = Vector3(0, 2.5, -6.8)
+script = ExtResource("2_objective")
+interaction_prompt = "Press E to inspect the glowing canvas"
+completion_message = "The canvas shifts into a map of connected worlds across the PTL Universe."
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GlowingCanvas"]
+shape = SubResource("BoxShape3D_canvas_interaction")
+
 [node name="FloatingPaintParticles" type="Node3D" parent="."]
 
 [node name="PinkParticle1" type="MeshInstance3D" parent="FloatingPaintParticles"]
@@ -210,4 +223,4 @@ mesh = SubResource("SphereMesh_particle")
 surface_material_override/0 = SubResource("StandardMaterial3D_teal")
 
 [node name="ReturnPortal" parent="." instance=ExtResource("1_return_portal")]
-position = Vector3(0, 2, -5.5)
+position = Vector3(7.5, 2, -6)

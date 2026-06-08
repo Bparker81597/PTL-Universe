@@ -23,6 +23,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `Player` instances `Player.tscn`, which gives you a controllable third-person character.
 - `SunLight` is a `DirectionalLight3D` that gives the room basic global lighting.
 - `PrototypeUI` instances the UI scene with the title label.
+- `ObjectiveUI` instances `ObjectiveUI.tscn`, which shows the active objective and short interaction messages.
 - `NexusMenu` instances `nexus_menu.tscn`, which owns the interaction prompt and travel menu.
 - `main.gd` registers `WorldContainer` and the persistent player with `SceneManager` when the game starts.
 
@@ -44,6 +45,7 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `TheNexusRoom` sits at the far end and contains the larger portal platform, glowing portal core, portal rings, purple back glow, portal light, support columns, and side accent strips.
 - `InteractionArea` is an `Area3D` under `TheNexus`. It detects the player without physically blocking movement.
 - `InteractionArea/CollisionShape3D` uses a large sphere to define how close the player must be before the prompt appears.
+- Pressing `E` at `InteractionArea` completes the PTL HQ objective, opens the Nexus menu, and lets the player choose a destination.
 
 ## Player.tscn
 
@@ -92,6 +94,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - Each lighting node and `WorldEnvironment` gives the placeholder world its own atmosphere.
 - Each `WorldName` is a `Label3D` that clearly identifies the loaded destination.
 - Each `ReturnPortal` instances the shared `systems/portals/ReturnPortal.tscn`.
+- Each destination includes one `Area3D` objective object that completes the current objective when the player presses `E` nearby.
 
 ### Codeverse City Visual Groups
 
@@ -99,6 +102,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `DigitalSkyline` groups simple box towers and bright facade accents.
 - `FloatingCodePanels` combines transparent `QuadMesh` panels with `Label3D` code text.
 - `HolographicSign` is a standalone glowing `Label3D` that helps the space read like a digital district.
+- `CorruptedCodePanel` is an `Area3D` objective object near the left code panel. It completes `Investigate the corrupted code panels`.
 
 ### NovaTone Studio Visual Groups
 
@@ -106,6 +110,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `Speakers` groups dark box cabinets with emissive cylinder meshes used as placeholder woofers.
 - `SoundwavePanel` uses a dark backing panel and differently sized emissive bars to form a readable soundwave.
 - `Lighting` combines purple and blue `OmniLight3D` nodes to create a studio atmosphere.
+- `MusicConsole` is an `Area3D` objective object around the mixing desk. It completes `Check the soundwave console`.
 
 ### NovaCanvas Loft Visual Groups
 
@@ -113,6 +118,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `BackCanvas` is a large neutral box panel decorated with pink and teal primitive strokes.
 - `FloatingPaintParticles` groups small emissive sphere meshes suspended around the room.
 - `Lighting` combines a warm directional key light with pink and teal fill lights.
+- `GlowingCanvas` is an `Area3D` objective object around the large back canvas. It completes `Inspect the glowing canvas`.
 
 ## ReturnPortal.tscn
 
@@ -123,6 +129,35 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `PortalRing`, `PortalCore`, and `PortalLight` create a visible placeholder portal from Godot primitives.
 - `ReturnLabel` identifies the portal as the route back to PTL HQ.
 - `return_portal.gd` checks for the `player` group and asks `SceneManager` to load PTL HQ.
+
+## ObjectiveUI.tscn
+
+`ObjectiveUI.tscn` is the persistent objective display.
+
+- `ObjectiveUI` is a `CanvasLayer`, so it stays on top of the 3D world.
+- `ObjectivePanel` sits in the top-left corner and displays the current objective plus its status.
+- `MessagePanel` appears near the bottom of the screen when an objective interaction shows feedback.
+- `MessageTimer` hides the message after a few seconds.
+
+## objective_manager.gd
+
+`objective_manager.gd` is an autoload, so it persists while worlds are swapped.
+
+- `WORLD_OBJECTIVES` maps each world root name to its objective text.
+- `set_world_objective()` is called by `SceneManager` after each world loads.
+- `complete_current_objective()` marks the active objective complete and broadcasts a short message to the UI.
+- `objective_changed` tells `ObjectiveUI` when to redraw the objective text.
+- `message_shown` tells `ObjectiveUI` when to show an interaction message.
+
+## objective_interactable.gd
+
+`objective_interactable.gd` is a reusable script for simple objective objects.
+
+- It extends `Area3D`, so each objective object can detect when the player is nearby.
+- `interaction_prompt` controls the prompt shown while the player is close.
+- `completion_message` controls the message shown after pressing `E`.
+- `_unhandled_input()` listens for the shared `interact` action and completes the current objective.
+- The script reuses the existing Nexus prompt UI so there is one consistent `Press E` prompt style.
 
 ## player.gd
 
@@ -166,6 +201,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `travel_to()` loads a world scene, removes the previous world from `WorldContainer`, and adds the new world.
 - `return_to_ptl_hq()` is a convenience function used by every return portal.
 - `move_player_to_spawn()` finds the new world's `SpawnPoint`, moves the existing player there, and clears old movement velocity.
+- After a world loads, `SceneManager` tells `ObjectiveManager` which objective should be active.
 - Only the world is replaced. The player, third-person camera, title UI, and Nexus menu remain alive.
 
 ## main.gd

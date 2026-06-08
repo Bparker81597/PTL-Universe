@@ -23,6 +23,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if event.is_action_pressed("interact") and nexus_menu.has_method("open_menu"):
+		ObjectiveManager.complete_current_objective("The Nexus interface is online. Choose a destination.")
 		nexus_menu.open_menu()
 		get_viewport().set_input_as_handled()
 

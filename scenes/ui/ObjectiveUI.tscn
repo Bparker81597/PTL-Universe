@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://ptl_objective_ui"]
+
+[ext_resource type="Script" path="res://scripts/objective_ui.gd" id="1_objective_ui"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_objective"]
+bg_color = Color(0.025, 0.035, 0.05, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12, 0.8, 0.95, 0.85)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_message"]
+bg_color = Color(0.04, 0.025, 0.06, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7, 0.2, 1, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="ObjectiveUI" type="CanvasLayer"]
+layer = 8
+script = ExtResource("1_objective_ui")
+
+[node name="ObjectivePanel" type="PanelContainer" parent="."]
+anchors_preset = 0
+offset_left = 18.0
+offset_top = 64.0
+offset_right = 348.0
+offset_bottom = 124.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_objective")
+
+[node name="MarginContainer" type="MarginContainer" parent="ObjectivePanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="ObjectiveLabel" type="Label" parent="ObjectivePanel/MarginContainer"]
+text = "Objective: Enter The Nexus"
+
+[node name="MessagePanel" type="PanelContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -150.0
+offset_right = 260.0
+offset_bottom = -92.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_message")
+
+[node name="MarginContainer" type="MarginContainer" parent="MessagePanel"]
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+
+[node name="MessageLabel" type="Label" parent="MessagePanel/MarginContainer"]
+text = "Message"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MessageTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true

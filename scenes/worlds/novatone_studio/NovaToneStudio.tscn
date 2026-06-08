@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://ptl_novatone_studio"]
+[gd_scene load_steps=13 format=3 uid="uid://ptl_novatone_studio"]
 
 [ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
+[ext_resource type="Script" path="res://systems/objectives/objective_interactable.gd" id="2_objective"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(20, 0.2, 20)
@@ -15,6 +16,9 @@ top_radius = 0.7
 bottom_radius = 0.7
 height = 0.35
 sides = 24
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_console_interaction"]
+size = Vector3(7, 3, 4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.045, 0.025, 0.065, 1)
@@ -132,6 +136,15 @@ position = Vector3(2.2, 1.72, -0.1)
 scale = Vector3(0.12, 0.08, 1.2)
 mesh = SubResource("BoxMesh_unit")
 surface_material_override/0 = SubResource("StandardMaterial3D_blue")
+
+[node name="MusicConsole" type="Area3D" parent="MixingDesk"]
+position = Vector3(0, 1.2, 0)
+script = ExtResource("2_objective")
+interaction_prompt = "Press E to check the soundwave console"
+completion_message = "The console reveals a hidden rhythm embedded inside The Nexus signal."
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MixingDesk/MusicConsole"]
+shape = SubResource("BoxShape3D_console_interaction")
 
 [node name="Speakers" type="Node3D" parent="."]
 

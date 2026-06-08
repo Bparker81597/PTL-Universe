@@ -12,6 +12,8 @@ var player: CharacterBody3D
 func register_world_host(container: Node3D, persistent_player: CharacterBody3D) -> void:
 	world_container = container
 	player = persistent_player
+	if world_container.get_child_count() > 0:
+		ObjectiveManager.set_world_objective(world_container.get_child(0).name)
 
 
 func travel_to(world_scene_path: String) -> void:
@@ -31,6 +33,7 @@ func travel_to(world_scene_path: String) -> void:
 	var new_world := packed_world.instantiate() as Node3D
 	world_container.add_child(new_world)
 	move_player_to_spawn(new_world)
+	ObjectiveManager.set_world_objective(new_world.name)
 
 
 func return_to_ptl_hq() -> void:

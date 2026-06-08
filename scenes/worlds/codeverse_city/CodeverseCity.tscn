@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://ptl_codeverse_city"]
+[gd_scene load_steps=13 format=3 uid="uid://ptl_codeverse_city"]
 
 [ext_resource type="PackedScene" path="res://systems/portals/ReturnPortal.tscn" id="1_return_portal"]
+[ext_resource type="Script" path="res://systems/objectives/objective_interactable.gd" id="2_objective"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(22, 0.2, 22)
@@ -12,6 +13,9 @@ size = Vector3(22, 0.2, 22)
 
 [sub_resource type="QuadMesh" id="QuadMesh_panel"]
 size = Vector2(2.6, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_interaction"]
+size = Vector3(4, 3, 3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.018, 0.028, 0.045, 1)
@@ -215,6 +219,24 @@ pixel_size = 0.006
 text = "CITY STATUS: ONLINE\nACCESS: CREATOR"
 font_size = 34
 outline_size = 3
+horizontal_alignment = 1
+
+[node name="CorruptedCodePanel" type="Area3D" parent="FloatingCodePanels"]
+position = Vector3(-5.2, 2.2, 1)
+script = ExtResource("2_objective")
+interaction_prompt = "Press E to investigate corrupted code"
+completion_message = "The panel is looping damaged access records. Someone altered the city network."
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FloatingCodePanels/CorruptedCodePanel"]
+shape = SubResource("BoxShape3D_interaction")
+
+[node name="CorruptionWarning" type="Label3D" parent="FloatingCodePanels/CorruptedCodePanel"]
+position = Vector3(0, 1.25, 0)
+pixel_size = 0.007
+modulate = Color(1, 0.15, 0.4, 1)
+text = "CORRUPTED"
+font_size = 36
+outline_size = 4
 horizontal_alignment = 1
 
 [node name="HolographicSign" type="Label3D" parent="."]

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://ptl_main_scene"]
+[gd_scene load_steps=7 format=3 uid="uid://ptl_main_scene"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/worlds/PTL_HQ.tscn" id="1_ptl_hq"]
 [ext_resource type="PackedScene" path="res://scenes/characters/Player.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/PrototypeUI.tscn" id="3_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/nexus_menu.tscn" id="4_nexus_menu"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ObjectiveUI.tscn" id="5_objective_ui"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_main")
@@ -21,5 +22,7 @@ rotation = Vector3(-0.9, 0.5, 0.0)
 light_energy = 1.4
 
 [node name="PrototypeUI" parent="." instance=ExtResource("3_ui")]
+
+[node name="ObjectiveUI" parent="." instance=ExtResource("5_objective_ui")]
 
 [node name="NexusMenu" parent="." instance=ExtResource("4_nexus_menu")]

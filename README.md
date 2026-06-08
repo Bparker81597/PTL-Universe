@@ -6,6 +6,8 @@ This first version intentionally stays small. It includes a basic PTL HQ lobby, 
 
 The Nexus now travels to three small placeholder worlds: Codeverse City, NovaTone Studio, and NovaCanvas Loft. Each destination includes a walk-in portal back to PTL HQ.
 
+The prototype also includes a simple objective UI. Each world sets a small objective, and each destination has one `E` interaction that completes it.
+
 ## Open The Project
 
 Open this folder in Godot 4:
