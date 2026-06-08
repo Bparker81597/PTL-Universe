@@ -143,9 +143,6 @@ position = Vector3(0, 1.2, 0)
 script = ExtResource("2_objective")
 interaction_prompt = "Press E to check the soundwave console"
 completion_message = "The console reveals a hidden rhythm embedded inside The Nexus signal."
-clue_id = "signal_fragment_b"
-clue_title = "Signal Fragment B"
-lore_entry = "A repeating NovaTone rhythm carries a second fragment of the unknown transmission."
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MixingDesk/MusicConsole"]
 shape = SubResource("BoxShape3D_console_interaction")
@@ -245,4 +242,7 @@ position = Vector3(0, 2, -5.2)
 position = Vector3(3.4, 0, 4.2)
 rotation = Vector3(0, -0.6, 0)
 npc_name = "NovaTone Guide"
-dialogue_text = "The frequencies haven't been stable lately."
+dialogue_text = "The frequencies feel unstable."
+after_clue_dialogue_text = "This distortion sounds like corrupted code."
+dialogue_clue_id = "signal_fragment_b"
+investigation_step_id = "talk_novatone_guide"

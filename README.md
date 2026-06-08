@@ -6,9 +6,9 @@ This first version intentionally stays small. It includes a basic PTL HQ lobby, 
 
 The Nexus now travels to four small placeholder worlds: Codeverse City, NovaTone Studio, NovaCanvas Loft, and Wonder Labs. Each destination includes a walk-in portal back to PTL HQ.
 
-The prototype also includes a simple objective UI. Each world sets a small objective, and each destination has one `E` interaction that completes it.
+The prototype also includes a simple objective UI. The first investigation drives the active objective while its mystery is in progress.
 
-The first investigation, **The Corrupted Signal**, connects those world interactions into a three-clue mystery. Press `Tab` to open the Investigation Journal.
+The first investigation, **The Corrupted Signal**, follows this chain: investigate clue A, talk to Codeverse Mentor, talk to NovaTone Guide, talk to NovaCanvas Guide, then return to PTL HQ to reveal **GL!TCH**. Press `Tab` to open the Investigation Journal.
 
 Quaternius Sci-Fi Essentials glTF props are imported under `assets/quaternius/sci_fi_essentials/` and used as environmental storytelling props in PTL HQ, Codeverse City, and Wonder Labs. No weapon models or combat systems were added.
 

@@ -291,3 +291,6 @@ position = Vector3(-3.2, 0, 3.4)
 rotation = Vector3(0, 0.45, 0)
 npc_name = "Codeverse Mentor"
 dialogue_text = "Something is corrupting the city systems."
+after_clue_dialogue_text = "This signal is spreading beyond Codeverse."
+dialogue_clue_id = "signal_fragment_a"
+investigation_step_id = "talk_codeverse_mentor"

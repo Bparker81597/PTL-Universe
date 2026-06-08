@@ -12,6 +12,9 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 - `res://assets/models/`, `res://assets/textures/`, `res://assets/audio/`, and `res://assets/animations/` are ready for future art and audio.
 - `res://assets/quaternius/sci_fi_essentials/` contains selected Quaternius Sci-Fi Essentials glTF props for placeholder environmental storytelling.
 - `res://systems/portals/`, `res://systems/dialogue/`, and `res://systems/quests/` are placeholders for future gameplay systems.
+- `res://characters/` contains future character folders for Brittanyverse, Nateverse, Brooklynverse, Maizeverse, and GL!TCH.
+- `res://worlds/` contains future content folders for PTL HQ, Codeverse, NovaTone, NovaCanvas, and DreamFrame.
+- `res://quests/` contains future quest folders for `episode_01` and `episode_02`.
 - `res://docs/` contains project notes and learning references.
 
 ## Main.tscn
@@ -84,11 +87,12 @@ This project is a small Godot 4 third-person exploration prototype for the Parke
 
 `NPC_Base.gd` controls every instance of the reusable NPC scene.
 
-- `npc_name`, `dialogue_text`, and `interaction_prompt` are exported properties, so each NPC can be configured in its world scene.
+- `npc_name`, both dialogue lines, `dialogue_clue_id`, `interaction_prompt`, and `investigation_step_id` are exported properties, so each NPC can be configured in its world scene.
 - `_ready()` updates the floating name, connects the interaction area, and finds the shared prompt and dialogue UI through groups.
 - `_on_body_entered()` checks for the `player` group and shows `Press E to talk to [name]`.
-- `_unhandled_input()` opens the dialogue window when the player is nearby and presses `E`.
+- `_unhandled_input()` opens the dialogue window when the player is nearby and presses `E`, then asks `InvestigationManager` whether the conversation advances the chain.
 - `_on_body_exited()` hides the prompt when the player walks away.
+- `_get_current_dialogue()` chooses the before-clue or after-clue line based on whether the configured clue has been discovered.
 
 ## DialogueWindow.tscn
 
@@ -136,7 +140,7 @@ Each placeholder world follows the same small structure so future worlds remain 
 - Each lighting node and `WorldEnvironment` gives the placeholder world its own atmosphere.
 - Each `WorldName` is a `Label3D` that clearly identifies the loaded destination.
 - Each `ReturnPortal` instances the shared `systems/portals/ReturnPortal.tscn`.
-- Each destination includes one `Area3D` objective object that completes the current objective when the player presses `E` nearby.
+- Codeverse contains the first clue object. NovaTone and NovaCanvas keep placeholder interactable props for future use.
 
 ### Codeverse City Visual Groups
 
@@ -146,9 +150,8 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `HolographicSign` is a standalone glowing `Label3D` that helps the space read like a digital district.
 - `QuaterniusTechProps` instances `Prop_Crate`, `Prop_Crate_Large`, `Prop_Crate_Tarp`, `Prop_SatelliteDish`, `Prop_Barrel1`, and `Enemy_EyeDrone`.
 - `StaticEyeDroneScanner` uses the EyeDrone model only as a non-moving scanner prop.
-- `CorruptedCodePanel` is an `Area3D` objective object near the left code panel. It completes `Investigate the corrupted code panels`.
-- The panel unlocks `Signal Fragment A` and a Codeverse lore entry for `The Corrupted Signal`.
-- `CodeverseMentor` instances `NPC_Base.tscn` and says `Something is corrupting the city systems.`
+- `CorruptedCodePanel` is an `Area3D` clue object near the left code panel. It unlocks `Signal Fragment A`.
+- `CodeverseMentor` says `Something is corrupting the city systems.` before clue A and `This signal is spreading beyond Codeverse.` after clue A. The after-clue conversation unlocks `Signal Fragment B`.
 
 ### NovaTone Studio Visual Groups
 
@@ -156,9 +159,8 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `Speakers` groups dark box cabinets with emissive cylinder meshes used as placeholder woofers.
 - `SoundwavePanel` uses a dark backing panel and differently sized emissive bars to form a readable soundwave.
 - `Lighting` combines purple and blue `OmniLight3D` nodes to create a studio atmosphere.
-- `MusicConsole` is an `Area3D` objective object around the mixing desk. It completes `Check the soundwave console`.
-- The console unlocks `Signal Fragment B` and a NovaTone lore entry.
-- `NovaToneGuide` instances `NPC_Base.tscn` and says `The frequencies haven't been stable lately.`
+- `MusicConsole` remains a simple placeholder interactable around the mixing desk.
+- `NovaToneGuide` says `The frequencies feel unstable.` before clue B and `This distortion sounds like corrupted code.` after clue B. The after-clue conversation unlocks `Signal Fragment C`.
 
 ### NovaCanvas Loft Visual Groups
 
@@ -166,9 +168,8 @@ Each placeholder world follows the same small structure so future worlds remain 
 - `BackCanvas` is a large neutral box panel decorated with pink and teal primitive strokes.
 - `FloatingPaintParticles` groups small emissive sphere meshes suspended around the room.
 - `Lighting` combines a warm directional key light with pink and teal fill lights.
-- `GlowingCanvas` is an `Area3D` objective object around the large back canvas. It completes `Inspect the glowing canvas`.
-- The canvas unlocks `Signal Fragment C` and a NovaCanvas lore entry.
-- `NovaCanvasGuide` instances `NPC_Base.tscn` and says `The paintings are reacting to something.`
+- `GlowingCanvas` remains a simple placeholder interactable around the large back canvas.
+- `NovaCanvasGuide` says `The canvas keeps reacting to invisible energy.` before clue C and `This energy feels alive.` after clue C. The after-clue conversation sets the objective to `Return to PTL HQ`.
 
 ### Wonder Labs Visual Groups
 
@@ -214,7 +215,7 @@ The imported kit assets live under `res://assets/quaternius/sci_fi_essentials/`.
 - `JournalOverlay` darkens the screen while the journal is open.
 - `JournalPanel` contains the readable journal layout.
 - `ActiveInvestigationLabel` shows the current investigation, starting with `The Corrupted Signal`.
-- The active section also shows the four investigation steps and their Pending, Active, or Complete state.
+- The active section shows the sequential investigation steps and their Pending, Active, or Complete state.
 - `CluesLabel` lists discovered signal fragments and hides undiscovered clue names.
 - `CompletedLabel` lists finished investigations.
 - `LoreLabel` lists lore entries unlocked by world interactions.
@@ -235,7 +236,7 @@ The imported kit assets live under `res://assets/quaternius/sci_fi_essentials/`.
 `objective_manager.gd` is an autoload, so it persists while worlds are swapped.
 
 - `WORLD_OBJECTIVES` maps each world root name to its objective text.
-- `set_world_objective()` is called by `SceneManager` after each world loads.
+- `set_world_objective()` is called by `SceneManager` after each world loads, then the active investigation can replace it with the current chain objective.
 - `complete_current_objective()` marks the active objective complete and broadcasts a short message to the UI.
 - `set_custom_objective()` lets the investigation system replace a world objective with `Return to PTL HQ`.
 - `objective_changed` tells `ObjectiveUI` when to redraw the objective text.
@@ -251,20 +252,23 @@ The imported kit assets live under `res://assets/quaternius/sci_fi_essentials/`.
 - `_unhandled_input()` listens for the shared `interact` action and completes the current objective.
 - The script reuses the existing Nexus prompt UI so there is one consistent `Press E` prompt style.
 - Optional clue fields tell `InvestigationManager` what clue and lore entry to unlock.
-- Already-discovered clue objects stop prompting, so they cannot complete unrelated later objectives.
+- Clue objects only work when `InvestigationManager` says that clue is the active step, so out-of-order interactions cannot complete unrelated later objectives.
 
 ## investigation_manager.gd
 
 `investigation_manager.gd` is an autoload that stores investigation progress across world travel.
 
 - `active_investigation` starts as `The Corrupted Signal`.
+- `current_step` tracks the sequential clue, conversation, and return-to-HQ objectives.
 - `discovered_clues` stores the three named signal fragments.
+- `talked_to_npcs` stores required conversations.
 - `completed_investigations` stores finished investigation names.
 - `lore_entries` stores lore text unlocked by clue interactions.
-- `discover_clue()` records a clue and changes the active objective to `Return to PTL HQ` after all three fragments are collected.
-- `get_steps_text()` formats the four Corrupted Signal objectives for the Investigation Journal.
-- `on_world_loaded()` checks whether returning to PTL HQ should complete the investigation.
-- `complete_investigation()` moves `The Corrupted Signal` into completed investigations and shows `Unknown source detected: GLITCH`.
+- `discover_clue()` records clue A from the Codeverse panel and updates the objective.
+- `complete_npc_step()` lets dialogue unlock clues B and C, then sets `Return to PTL HQ` after all three required conversations.
+- `get_steps_text()` formats the Corrupted Signal chain for the Investigation Journal.
+- `on_world_loaded()` keeps the chain objective active across travel and completes the investigation on the final return to PTL HQ.
+- `complete_investigation()` moves `The Corrupted Signal` into completed investigations and shows `Unknown source detected: GL!TCH`.
 
 ## player.gd
 

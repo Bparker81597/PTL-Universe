@@ -4,7 +4,10 @@ extends Node3D
 
 @export var npc_name: String = "NPC"
 @export_multiline var dialogue_text: String = "Hello."
+@export_multiline var after_clue_dialogue_text: String = ""
+@export var dialogue_clue_id: String = ""
 @export var interaction_prompt: String = "Press E to talk to"
+@export var investigation_step_id: String = ""
 
 @onready var name_label: Label3D = $NameLabel
 @onready var interaction_area: Area3D = $InteractionArea
@@ -28,7 +31,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("interact") and dialogue_ui.has_method("show_dialogue"):
 		_hide_prompt()
-		dialogue_ui.show_dialogue(npc_name, dialogue_text)
+		dialogue_ui.show_dialogue(npc_name, _get_current_dialogue())
+		if investigation_step_id != "":
+			InvestigationManager.complete_npc_step(investigation_step_id)
 		get_viewport().set_input_as_handled()
 
 
@@ -52,3 +57,13 @@ func _on_body_exited(body: Node3D) -> void:
 func _hide_prompt() -> void:
 	if prompt_ui != null and prompt_ui.has_method("set_interaction_prompt"):
 		prompt_ui.set_interaction_prompt(false, interaction_prompt)
+
+
+func _get_current_dialogue() -> String:
+	if (
+		dialogue_clue_id != ""
+		and after_clue_dialogue_text != ""
+		and InvestigationManager.discovered_clues.has(dialogue_clue_id)
+	):
+		return after_clue_dialogue_text
+	return dialogue_text

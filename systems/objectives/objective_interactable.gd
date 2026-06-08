@@ -19,7 +19,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not player_nearby or ObjectiveManager.objective_complete or _is_already_discovered():
+	if not player_nearby or not _can_interact():
 		return
 
 	if event.is_action_pressed("interact"):
@@ -31,7 +31,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_body_entered(body: Node3D) -> void:
-	if not body.is_in_group("player") or ObjectiveManager.objective_complete or _is_already_discovered():
+	if not body.is_in_group("player") or not _can_interact():
 		return
 
 	player_nearby = true
@@ -54,3 +54,11 @@ func _hide_prompt() -> void:
 
 func _is_already_discovered() -> bool:
 	return clue_id != "" and InvestigationManager.discovered_clues.has(clue_id)
+
+
+func _can_interact() -> bool:
+	if ObjectiveManager.objective_complete or _is_already_discovered():
+		return false
+	if clue_id != "":
+		return InvestigationManager.can_discover_clue(clue_id)
+	return InvestigationManager.active_investigation == ""
